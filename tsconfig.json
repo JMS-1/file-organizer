@@ -1,0 +1,26 @@
+{
+    "compileOnSave": true,
+    "compilerOptions": {
+        "forceConsistentCasingInFileNames": true,
+        "inlineSources": true,
+        "jsx": "react",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "noEmitOnError": true,
+        "noImplicitAny": true,
+        "noUnusedLocals": true,
+        "outDir": "build/app",
+        "removeComments": true,
+        "skipLibCheck": true,
+        "sourceMap": true,
+        "strictPropertyInitialization": false,
+        "target": "es2017"
+    },
+    "exclude": [
+        "node_modules"
+    ],
+    "include": [
+        "src/**/*.ts",
+        "src/**/*.tsx"
+    ]
+}

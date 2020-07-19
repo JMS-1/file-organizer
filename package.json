@@ -1,0 +1,45 @@
+{
+  "author": "Dr. Jochen Manns <vcrnet-1@psimarron.net>",
+  "dependencies": {
+    "classnames": "^2.2.6",
+    "debug": "^4.1.1",
+    "electron": "^9.1.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "description": "File Organizer",
+  "devDependencies": {
+    "@insynergie/eslint-config": "^1.4.2",
+    "@insynergie/prettier-config": "^1.2.0",
+    "@insynergie/stylelint-config": "^2.0.0",
+    "@types/classnames": "^2.2.10",
+    "@types/debug": "^4.1.5",
+    "@types/node": "^14.0.23",
+    "@types/react-dom": "^16.9.8",
+    "eslint": "^7.5.0",
+    "gulp": "4.0.2",
+    "gulp-sass": "^4.1.0",
+    "ncp": "^2.0.0",
+    "prettier": "^2.0.5",
+    "rimraf": "^3.0.2",
+    "sass": "1.26.10",
+    "stylelint": "^13.6.1",
+    "typescript": "^3.9.7"
+  },
+  "eslintConfig": {
+    "extends": "@insynergie"
+  },
+  "license": "MIT",
+  "main": "build/index.js",
+  "name": "@jms-1/file-organizer",
+  "prettier": "@insynergie/prettier-config",
+  "scripts": {
+    "start": "node_modules/.bin/electron app/index",
+    "build": "rimraf build/app build/node_modules && tsc && gulp build-sass && ncp src/index.html build/app/index.html && ncp package.json build/package.json",
+    "watch-tsx": "tsc --watch"
+  },
+  "stylelint": {
+    "extends": "@insynergie/stylelint-config"
+  },
+  "version": "0.0.1"
+}

@@ -1,0 +1,25 @@
+{
+    "tasks": [
+        {
+            "isBackground": true,
+            "label": "watch TSX",
+            "problemMatcher": "$awesometsc",
+            "script": "watch-tsx",
+            "type": "npm"
+        },
+        {
+            "isBackground": true,
+            "label": "watch SASS",
+            "problemMatcher": "$tsc",
+            "task": "watch-sass",
+            "type": "gulp"
+        },
+        {
+            "label": "build",
+            "problemMatcher": "$awesometsc",
+            "script": "build",
+            "type": "npm"
+        },
+    ],
+    "version": "2.0.0"
+}

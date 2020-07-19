@@ -1,0 +1,40 @@
+{
+    "compounds": [
+        {
+            "configurations": [
+                "Debug Main",
+                "Debug Renderer"
+            ],
+            "name": "Debug"
+        }
+    ],
+    "configurations": [
+        {
+            "console": "internalConsole",
+            "name": "Debug Main",
+            "port": 29091,
+            "protocol": "inspector",
+            "request": "launch",
+            "runtimeArgs": [
+                "build/app/index.js",
+                "--inspect-brk=29091",
+                "--remote-debugging-port=29092"
+            ],
+            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+            "smartStep": true,
+            "sourceMaps": true,
+            "type": "node",
+            "env": {
+                "DEBUG": "*"
+            }
+        },
+        {
+            "name": "Debug Renderer",
+            "port": 29092,
+            "request": "attach",
+            "timeout": 15000,
+            "type": "chrome",
+            "webRoot": "${workspaceFolder}"
+        }
+    ]
+}
