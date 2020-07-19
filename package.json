@@ -1,5 +1,6 @@
 {
   "author": "Dr. Jochen Manns <vcrnet-1@psimarron.net>",
+  "bugs": "https://github.com/JMS-1/file-organizer/issues",
   "dependencies": {
     "classnames": "^2.2.6",
     "debug": "^4.1.1",
@@ -29,13 +30,19 @@
   "eslintConfig": {
     "extends": "@insynergie"
   },
+  "homepage": "https://github.com/JMS-1/file-organizer",
   "license": "MIT",
   "main": "build/index.js",
   "name": "@jms-1/file-organizer",
   "prettier": "@insynergie/prettier-config",
+  "private": "false",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:JMS-1/file-organizer.git"
+  },
   "scripts": {
-    "start": "node_modules/.bin/electron app/index",
     "build": "rimraf build/app build/node_modules && tsc && gulp build-sass && ncp src/index.html build/app/index.html && ncp package.json build/package.json",
+    "start": "node_modules/.bin/electron app/index",
     "watch-tsx": "tsc --watch"
   },
   "stylelint": {
