@@ -1,6 +1,7 @@
 {
     "compileOnSave": true,
     "compilerOptions": {
+        "experimentalDecorators": true,
         "forceConsistentCasingInFileNames": true,
         "inlineSources": true,
         "jsx": "react",

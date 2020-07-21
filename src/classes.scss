@@ -18,6 +18,11 @@ body {
         height: 100%;
         overflow: hidden;
         background: #eeeeee;
+
+        .fo-step {
+            height: 100%;
+            overflow: hidden;
+        }
     }
 }
 
@@ -29,3 +34,6 @@ body {
     -webkit-user-select: none;
     user-select: none;
 }
+
+@import 'root';
+@import 'steps/index';
