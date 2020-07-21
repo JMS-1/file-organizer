@@ -19,7 +19,11 @@ function createMainWindow(): BrowserWindow {
         },
     })
 
-    if (process.env.NODE_ENV === 'production') {
+    window.on('closed', () => {
+        mainWindow = null
+    })
+
+    if (isProduction) {
         window.loadURL(
             formatUrl({
                 pathname: path.join(__dirname, 'index.html'),
@@ -28,25 +32,21 @@ function createMainWindow(): BrowserWindow {
             })
         )
     } else {
-        window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`)
-    }
-
-    window.on('closed', () => {
-        mainWindow = null
-    })
-
-    if (!isProduction) {
         window.webContents.on('before-input-event', (_ev, inp) => {
             if (inp.key === 'F12' && !inp.control) {
                 window.webContents.openDevTools({ mode: 'detach' })
             }
         })
+
+        window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`)
     }
 
     return window
 }
 
-app.commandLine.appendSwitch('remote-debugging-port', '29097')
+if (!isProduction) {
+    app.commandLine.appendSwitch('remote-debugging-port', '29097')
+}
 
 // quit application when all windows are closed
 app.on('window-all-closed', () => {
