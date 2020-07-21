@@ -16,7 +16,7 @@
             "protocol": "inspector",
             "request": "launch",
             "runtimeArgs": [
-                "build/app/index.js",
+                "dist/host/index.js",
                 "--inspect-brk=29091",
                 "--remote-debugging-port=29092"
             ],

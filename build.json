@@ -1,0 +1,38 @@
+{
+    "appId": "net.psimarron.file-organizer",
+    "directories": {
+        "app": "dist"
+    },
+    "extraMetadata": {
+        "main": "host/index.js"
+    },
+    "extraResources": [
+        {
+            "from": "dist/static",
+            "to": "static"
+        }
+    ],
+    "files": [
+        "package.json",
+        "config.json",
+        "config.custom.json",
+        {
+            "filter": [
+                "**/*.js"
+            ],
+            "from": "host",
+            "to": "host"
+        },
+        {
+            "filter": [
+                "**/*.js"
+            ],
+            "from": "renderer",
+            "to": "renderer"
+        }
+    ],
+    "linux": {
+        "target": "appImage"
+    },
+    "productName": "File Organizer"
+}

@@ -2,5 +2,9 @@ node_modules
 yarn-error.log
 yarn.lock
 
-/build/app/**/*.js.map
-/build/config.custom.json
+config.custom.json
+
+/app
+
+/dist/**/*
+!/dist/File Organizer-0.0.1.AppImage

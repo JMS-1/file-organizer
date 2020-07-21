@@ -10,7 +10,7 @@
         "noEmitOnError": true,
         "noImplicitAny": true,
         "noUnusedLocals": true,
-        "outDir": "build/app",
+        "outDir": "dist",
         "removeComments": true,
         "skipLibCheck": true,
         "sourceMap": true,
