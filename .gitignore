@@ -7,4 +7,4 @@ config.custom.json
 /app
 
 /dist/**/*
-!/dist/File Organizer-0.0.1.AppImage
+!/dist/File Organizer-*.AppImage
