@@ -1,27 +1,7 @@
 {
-    "compileOnSave": true,
+    "extends": "./node_modules/electron-webpack/tsconfig-base.json",
     "compilerOptions": {
         "experimentalDecorators": true,
-        "forceConsistentCasingInFileNames": true,
-        "inlineSources": true,
-        "jsx": "react",
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "noEmitOnError": true,
-        "noImplicitAny": true,
-        "noUnusedLocals": true,
-        "outDir": "dist",
-        "removeComments": true,
-        "skipLibCheck": true,
-        "sourceMap": true,
-        "strictPropertyInitialization": false,
-        "target": "es2017"
-    },
-    "exclude": [
-        "node_modules"
-    ],
-    "include": [
-        "src/**/*.ts",
-        "src/**/*.tsx"
-    ]
+        "jsx": "react"
+    }
 }

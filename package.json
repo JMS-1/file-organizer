@@ -1,41 +1,57 @@
 {
   "author": "Dr. Jochen Manns <vcrnet-1@psimarron.net>",
   "bugs": "https://github.com/JMS-1/file-organizer/issues",
-  "description": "File Organizer",
+  "build": {
+    "appId": "net.psimarron.file-organizer",
+    "linux": {
+      "target": "AppImage"
+    },
+    "productName": "File Organizer"
+  },
   "dependencies": {
     "classnames": "^2.2.6",
     "debug": "^4.1.1",
     "mobx": "^5.15.4",
     "mobx-react": "^6.2.2",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "source-map-support": "^0.5.19"
   },
+  "description": "File Organizer",
   "devDependencies": {
     "@insynergie/eslint-config": "^1.4.3",
     "@insynergie/prettier-config": "^1.2.0",
     "@insynergie/stylelint-config": "^2.0.0",
     "@types/classnames": "^2.2.10",
     "@types/debug": "^4.1.5",
-    "@types/node": "^14.0.24",
+    "@types/node": "12.12.2",
+    "@types/react": "^16.9.43",
     "@types/react-dom": "^16.9.8",
-    "electron": "^9.1.1",
+    "electron": "9.1.1",
     "electron-builder": "^22.7.0",
+    "electron-webpack": "^2.8.2",
+    "electron-webpack-ts": "^4.0.1",
     "eslint": "^7.5.0",
-    "gulp": "4.0.2",
-    "gulp-sass": "^4.1.0",
     "ncp": "^2.0.0",
     "prettier": "^2.0.5",
     "rimraf": "^3.0.2",
-    "sass": "1.26.10",
+    "sass": "^1.26.10",
+    "sass-loader": "^9.0.2",
     "stylelint": "^13.6.1",
-    "typescript": "^3.9.7"
+    "typescript": "^3.9.7",
+    "webpack": "^4.43.0"
+  },
+  "electronWebpack": {
+    "renderer": {
+      "webpackConfig": "enableCssModules.js"
+    },
+    "title": "File Organizer"
   },
   "eslintConfig": {
     "extends": "@insynergie"
   },
   "homepage": "https://github.com/JMS-1/file-organizer",
   "license": "MIT",
-  "main": "app/host/index.js",
   "name": "@jms-1/file-organizer",
   "prettier": "@insynergie/prettier-config",
   "private": "false",
@@ -44,10 +60,9 @@
     "url": "git@github.com:JMS-1/file-organizer.git"
   },
   "scripts": {
-    "build": "rimraf dist && tsc && gulp build-sass && ncp src/renderer/index.html dist/static/index.html && ncp config.json dist/config.json && ncp package.json dist/package.json && ncp config.custom.json dist/config.custom.json",
-    "deploy": "npm run build && electron-builder -c build.json",
-    "start": "node_modules/.bin/electron dist/index",
-    "watch-tsx": "tsc --watch"
+    "build": "rimraf dist && electron-webpack",
+    "deploy": "rimraf dist && electron-webpack && electron-builder",
+    "watch": "electron-webpack dev"
   },
   "stylelint": {
     "extends": "@insynergie/stylelint-config",
@@ -55,5 +70,5 @@
       "selector-class-pattern": null
     }
   },
-  "version": "0.0.1"
+  "version": "0.0.2"
 }

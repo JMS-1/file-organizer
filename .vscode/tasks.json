@@ -2,17 +2,10 @@
     "tasks": [
         {
             "isBackground": true,
-            "label": "watch TSX",
+            "label": "watch",
             "problemMatcher": "$awesometsc",
-            "script": "watch-tsx",
+            "script": "watch",
             "type": "npm"
-        },
-        {
-            "isBackground": true,
-            "label": "watch SASS",
-            "problemMatcher": "$tsc",
-            "task": "watch-sass",
-            "type": "gulp"
         },
         {
             "label": "build",

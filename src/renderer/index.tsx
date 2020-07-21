@@ -3,18 +3,14 @@ import { render } from 'react-dom'
 
 import { Root } from './root'
 
-import { config } from '../host/config'
+const isProduction = process.env.NODE_ENV === 'production'
 
-setTimeout(async () => {
-    try {
-        render(<Root />, document.querySelector('app-root'))
-    } catch (error) {
-        alert(error)
-    }
-}, 1000)
+import './index.scss'
+
+render(<Root />, document.querySelector('body > div#app'))
 
 // Kleine Hilfe zum Styling während der Entwicklung.
-if (config.develop) {
+if (!isProduction) {
     document.addEventListener('keydown', (ev: KeyboardEvent) => {
         if (!ev.ctrlKey || ev.key !== 'F12') {
             return

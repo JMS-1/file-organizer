@@ -11,7 +11,7 @@ body {
     margin: 0;
     overflow: hidden;
 
-    app-root {
+    > div:first-child {
         position: relative;
         display: block;
         width: 100%;
@@ -19,7 +19,7 @@ body {
         overflow: hidden;
         background: #eeeeee;
 
-        .fo-step {
+        :global(.fo-step) {
             height: 100%;
             overflow: hidden;
         }
@@ -34,6 +34,3 @@ body {
     -webkit-user-select: none;
     user-select: none;
 }
-
-@import 'root';
-@import 'steps/index';

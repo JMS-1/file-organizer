@@ -1,15 +1,16 @@
 import { observer } from 'mobx-react'
 import * as React from 'react'
 
+import styles from './root.module.scss'
 import { DirectoryChooser, FileFinder, FileComparer, FileCleaner, Finished, FileInspector } from './steps'
 import { store } from './store'
 
 interface IRootProps {}
 
 @observer
-export class Root extends React.PureComponent<IRootProps> {
+export class Root extends React.Component<IRootProps> {
     render(): JSX.Element {
-        return <div className='fo-root'>{this.createStep()}</div>
+        return <div className={styles['fo-root']}>{this.createStep()}</div>
     }
 
     private createStep(): JSX.Element {

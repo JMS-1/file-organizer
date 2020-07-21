@@ -1,15 +1,18 @@
+import classNames from 'classnames'
 import { observer } from 'mobx-react'
 import * as React from 'react'
+
+import styles from './done.module.scss'
 
 import { store } from '../store'
 
 interface IFinishedProps {}
 
 @observer
-export class Finished extends React.PureComponent<IFinishedProps> {
+export class Finished extends React.Component<IFinishedProps> {
     render(): JSX.Element {
         return (
-            <div className='fo-done fo-step'>
+            <div className={classNames(styles['fo-done'], 'fo-step')}>
                 <button onClick={() => (store.step = 'choose-root')}>[Fertig]</button>
             </div>
         )
