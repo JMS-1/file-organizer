@@ -9,7 +9,7 @@ import { store } from '../store'
 interface IFinishedProps {}
 
 @observer
-export class Finished extends React.Component<IFinishedProps> {
+export default class Finished extends React.Component<IFinishedProps> {
     render(): JSX.Element {
         return (
             <div className={classNames(styles['fo-done'], 'fo-step')}>

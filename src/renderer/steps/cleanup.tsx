@@ -9,7 +9,7 @@ import { store } from '../store'
 interface IFileCleanerProps {}
 
 @observer
-export class FileCleaner extends React.Component<IFileCleanerProps> {
+export default class FileCleaner extends React.Component<IFileCleanerProps> {
     render(): JSX.Element {
         return (
             <div className={classNames(styles['fo-file-cleanup'], 'fo-step')}>

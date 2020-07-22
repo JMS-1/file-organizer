@@ -9,7 +9,7 @@ import { store } from '../store'
 interface IFileInspectorProps {}
 
 @observer
-export class FileInspector extends React.Component<IFileInspectorProps> {
+export default class FileInspector extends React.Component<IFileInspectorProps> {
     render(): JSX.Element {
         return (
             <div className={classNames(styles['fo-file-inspector'], 'fo-step')}>

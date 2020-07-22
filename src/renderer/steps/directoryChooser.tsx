@@ -9,7 +9,7 @@ import { store } from '../store'
 interface IDirectoryChooserProps {}
 
 @observer
-export class DirectoryChooser extends React.Component<IDirectoryChooserProps> {
+export default class DirectoryChooser extends React.Component<IDirectoryChooserProps> {
     render(): JSX.Element {
         return (
             <div className={classNames(styles['fo-choose-directory'], 'fo-step')}>

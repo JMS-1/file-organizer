@@ -2,31 +2,46 @@ import { observer } from 'mobx-react'
 import * as React from 'react'
 
 import styles from './root.module.scss'
-import { DirectoryChooser, FileFinder, FileComparer, FileCleaner, Finished, FileInspector } from './steps'
 import { store } from './store'
 
 interface IRootProps {}
 
+const LazyDirectoryChooser = React.lazy(() => import('./steps/directoryChooser'))
+
+const LazyFileFinder = React.lazy(() => import('./steps/fileFinder'))
+
+const LazyFileComparer = React.lazy(() => import('./steps/comparer'))
+
+const LazyFileInspector = React.lazy(() => import('./steps/inspector'))
+
+const LazyFileCleaner = React.lazy(() => import('./steps/cleanup'))
+
+const LazyFinished = React.lazy(() => import('./steps/done'))
+
 @observer
 export class Root extends React.Component<IRootProps> {
     render(): JSX.Element {
-        return <div className={styles['fo-root']}>{this.createStep()}</div>
+        return (
+            <div className={styles['fo-root']}>
+                <React.Suspense fallback={<div className='fo-step' />}>{this.createStep()}</React.Suspense>
+            </div>
+        )
     }
 
     private createStep(): JSX.Element {
         switch (store.step) {
             case 'choose-root':
-                return <DirectoryChooser />
+                return <LazyDirectoryChooser />
             case 'find-files':
-                return <FileFinder />
+                return <LazyFileFinder />
             case 'compare-files':
-                return <FileComparer />
+                return <LazyFileComparer />
             case 'inspect-duplicates':
-                return <FileInspector />
+                return <LazyFileInspector />
             case 'confirm-delete':
-                return <FileCleaner />
+                return <LazyFileCleaner />
             case 'finished':
-                return <Finished />
+                return <LazyFinished />
         }
     }
 }

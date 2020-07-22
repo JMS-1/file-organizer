@@ -9,7 +9,7 @@ import { store } from '../store'
 interface IFileComparerProps {}
 
 @observer
-export class FileComparer extends React.Component<IFileComparerProps> {
+export default class FileComparer extends React.Component<IFileComparerProps> {
     render(): JSX.Element {
         return (
             <div className={classNames(styles['fo-compare-files'], 'fo-step')}>

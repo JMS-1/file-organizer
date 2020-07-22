@@ -9,7 +9,7 @@ import { store } from '../store'
 interface IFileFinderProps {}
 
 @observer
-export class FileFinder extends React.Component<IFileFinderProps> {
+export default class FileFinder extends React.Component<IFileFinderProps> {
     render(): JSX.Element {
         return (
             <div className={classNames(styles['fo-find-files'], 'fo-step')}>
