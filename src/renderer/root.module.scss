@@ -7,4 +7,9 @@
         height: 100%;
         overflow: hidden;
     }
+
+    &.busy {
+        pointer-events: none;
+        opacity: 0.5;
+    }
 }

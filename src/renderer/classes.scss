@@ -10,6 +10,8 @@ body {
     position: relative;
     margin: 0;
     overflow: hidden;
+    font-family: Arial;
+    font-size: 20px;
 
     > div:first-child {
         position: relative;
@@ -18,6 +20,17 @@ body {
         height: 100%;
         overflow: hidden;
         background: #eeeeee;
+    }
+
+    input,
+    button {
+        font-size: inherit;
+    }
+
+    button {
+        background: #ffffff;
+        border-width: 1px;
+        border-radius: 2px;
     }
 }
 

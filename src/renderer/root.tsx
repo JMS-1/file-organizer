@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import { observer } from 'mobx-react'
 import * as React from 'react'
 
@@ -22,7 +23,7 @@ const LazyFinished = React.lazy(() => import('./steps/done'))
 export class Root extends React.Component<IRootProps> {
     render(): JSX.Element {
         return (
-            <div className={styles['fo-root']}>
+            <div className={classNames(styles['fo-root'], store.busy > 0 && styles.busy)}>
                 <React.Suspense fallback={<div className='fo-step' />}>{this.createStep()}</React.Suspense>
             </div>
         )

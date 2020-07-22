@@ -20,6 +20,8 @@ class RootStore {
 
     @observable private readonly _configuration: IConfiguration = { rootPath: '' }
 
+    @observable busy = 0
+
     constructor() {
         const config = localStorage.getItem(configName) || JSON.stringify(this._configuration)
 

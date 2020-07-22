@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import { remote } from 'electron'
+import { action } from 'mobx'
 import { observer } from 'mobx-react'
 import * as React from 'react'
 
@@ -14,12 +15,33 @@ export default class DirectoryChooser extends React.Component<IDirectoryChooserP
     render(): JSX.Element {
         return (
             <div className={classNames(styles['fo-choose-directory'], 'fo-step')}>
-                <button onClick={() => (store.step = 'find-files')}>[Verzeichnisauswahl]</button>
-                <input value={store.rootPath} onChange={(ev) => store.setRootPath(ev.target.value)} />
-                <div style={{ height: 'calc(100% - 2em)', overflow: 'auto', whiteSpace: 'pre-wrap' }}>
-                    {JSON.stringify(remote.process.env, null, 2)}
+                <div className={styles.selector}>
+                    <input readOnly value={store.rootPath} />
+                    <button onClick={this.browse}>...</button>
                 </div>
             </div>
         )
+    }
+
+    @action
+    private readonly browse = async (): Promise<void> => {
+        store.busy += 1
+
+        try {
+            const info = await remote.dialog.showOpenDialog({
+                buttonLabel: 'Fertig',
+                defaultPath: store.rootPath,
+                properties: ['openDirectory'],
+                title: 'Verzeichnis auswählen',
+            })
+
+            const dir = !info.canceled && info.filePaths?.[0]
+
+            if (dir) {
+                store.setRootPath(dir)
+            }
+        } finally {
+            store.busy -= 1
+        }
     }
 }

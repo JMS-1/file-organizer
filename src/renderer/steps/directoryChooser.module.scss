@@ -1,2 +1,9 @@
 .fo-choose-directory {
+    padding: 1em;
+
+    > .selector {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        column-gap: 0.5em;
+    }
 }
