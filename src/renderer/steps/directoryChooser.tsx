@@ -15,6 +15,7 @@ export default class DirectoryChooser extends React.Component<IDirectoryChooserP
         return (
             <div className={classNames(styles['fo-choose-directory'], 'fo-step')}>
                 <button onClick={() => (store.step = 'find-files')}>[Verzeichnisauswahl]</button>
+                <input value={store.rootPath} onChange={(ev) => store.setRootPath(ev.target.value)} />
                 <div style={{ height: 'calc(100% - 2em)', overflow: 'auto', whiteSpace: 'pre-wrap' }}>
                     {JSON.stringify(remote.process.env, null, 2)}
                 </div>
