@@ -31,6 +31,20 @@ body {
         background: #ffffff;
         border-width: 1px;
         border-radius: 2px;
+        outline: none;
+
+        &:hover,
+        &:active {
+            color: #444444;
+        }
+
+        &:hover {
+            background: #eeeeee;
+        }
+
+        &:active {
+            background: #cccccc;
+        }
     }
 }
 
