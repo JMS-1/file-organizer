@@ -5,6 +5,7 @@ yarn.lock
 config.custom.json
 
 /app
+/webpack.json
 
 /dist/**/*
 !/dist/File Organizer-*.AppImage
