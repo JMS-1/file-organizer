@@ -71,30 +71,37 @@ class RootStore {
 
             while (folders.length > 0 && this._scanning) {
                 const folder = folders.splice(0, 1)[0]
-                const content = await promisify(readdir)(folder)
-                const infos = await Promise.all(
-                    content
-                        .map((name) => join(folder, name))
-                        .map(
-                            async (path): Promise<IFileInfo | undefined> => {
-                                try {
-                                    return { info: await promisify(stat)(path), path }
-                                } catch (error) {
-                                    return undefined
+
+                try {
+                    const content = await promisify(readdir)(folder)
+                    const infos = await Promise.all(
+                        content
+                            .map((name) => join(folder, name))
+                            .map(
+                                async (path): Promise<IFileInfo | undefined> => {
+                                    try {
+                                        return { info: await promisify(stat)(path), path }
+                                    } catch (error) {
+                                        return undefined
+                                    }
                                 }
-                            }
-                        )
-                )
+                            )
+                    )
 
-                const dirs = infos.filter((i) => i?.info.isDirectory()).map((i) => i?.path) as string[]
-                const files = infos.filter((i) => i?.info.isFile()) as IFileInfo[]
+                    const dirs = infos.filter((i) => i?.info.isDirectory()).map((i) => i?.path) as string[]
+                    const files = infos.filter((i) => i?.info.isFile()) as IFileInfo[]
 
-                folders.push(...dirs)
+                    folders.push(...dirs)
 
-                this.files.push(...files)
+                    this.files.push(...files)
+                } catch (error) {
+                    console.error(error.message)
+                }
             }
         } catch (error) {
             this.files.splice(0)
+
+            console.error(error.message)
         } finally {
             this._scanning = false
         }
