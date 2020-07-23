@@ -1,5 +1,6 @@
+import { createHash } from 'crypto'
 import { remote } from 'electron'
-import { statSync, readdir, stat, Stats } from 'fs'
+import { statSync, readdir, stat, Stats, createReadStream } from 'fs'
 import { observable, action, computed } from 'mobx'
 import { join } from 'path'
 import { promisify } from 'util'
@@ -24,18 +25,45 @@ const stepOrder: TStep[] = [
 ]
 
 interface IConfiguration {
+    maxFileSize: number
     rootPath: string
 }
 
 interface IFileInfo {
+    hash?: string
     readonly info: Stats
     readonly path: string
+}
+
+function getHash(path: string, abort: () => boolean): Promise<string> {
+    return new Promise<string>((success, failure) => {
+        try {
+            const algo = createHash('sha1')
+            const stream = createReadStream(path)
+
+            stream.on('data', (data) => {
+                if (abort()) {
+                    stream.emit('end')
+                } else {
+                    algo.update(data)
+                }
+            })
+
+            stream.on('end', () => {
+                const hash = algo.digest('hex')
+
+                success(hash)
+            })
+        } catch (error) {
+            failure(error)
+        }
+    })
 }
 
 class RootStore {
     @observable step: TStep = 'choose-root'
 
-    @observable private readonly _configuration: IConfiguration = { rootPath: '' }
+    @observable private readonly _configuration: IConfiguration = { maxFileSize: 100 * 1024 * 1024, rootPath: '' }
 
     @observable busy = 0
 
@@ -43,18 +71,38 @@ class RootStore {
 
     @observable private _scanning = false
 
-    constructor() {
-        const config = localStorage.getItem(configName) || JSON.stringify(this._configuration)
+    @observable private _hash = 0
 
-        this._configuration = JSON.parse(config)
+    constructor() {
+        const config = localStorage.getItem(configName) || '{}'
+
+        this._configuration = { ...this._configuration, ...JSON.parse(config) }
     }
 
     get rootPath(): string {
         return this._configuration.rootPath
     }
 
+    get maxFileSize(): number {
+        return this._configuration.maxFileSize
+    }
+
     get scanning(): boolean {
         return this._scanning
+    }
+
+    get hashing(): boolean {
+        return this._hash > 0
+    }
+
+    get progress(): number {
+        if (this._hash < 1) {
+            return 100
+        }
+
+        const count = this._hash - 1 || this.files.length
+
+        return Math.max(0, Math.min(100, Math.round((count * 100) / this.files.length)))
     }
 
     private writeStore(): void {
@@ -89,7 +137,10 @@ class RootStore {
                     )
 
                     const dirs = infos.filter((i) => i?.info.isDirectory()).map((i) => i?.path) as string[]
-                    const files = infos.filter((i) => i?.info.isFile()) as IFileInfo[]
+
+                    const files = infos.filter(
+                        (i) => i?.info.isFile() && i.info.size <= this.maxFileSize
+                    ) as IFileInfo[]
 
                     folders.push(...dirs)
 
@@ -99,11 +150,63 @@ class RootStore {
                 }
             }
         } catch (error) {
-            this.files.splice(0)
+            this._scanning = false
 
             console.error(error.message)
         } finally {
-            this._scanning = false
+            if (this._scanning) {
+                this._scanning = false
+            } else {
+                this.files.splice(0)
+            }
+        }
+    }
+
+    private async createHash(): Promise<void> {
+        this._hash = 1
+
+        try {
+            const duplicates: Record<string, string[]> = {}
+
+            for (const file of this.files) {
+                if (!this.hashing) {
+                    break
+                }
+
+                try {
+                    file.hash = await getHash(file.path, () => !this.hashing)
+
+                    const match = duplicates[file.hash]
+
+                    if (match) {
+                        match.push(file.path)
+                    } else {
+                        duplicates[file.hash] = [file.path]
+                    }
+                } catch (error) {
+                    console.error(error.message)
+                }
+
+                if (this.hashing) {
+                    this._hash += 1
+                }
+            }
+
+            for (const key of Object.keys(duplicates)) {
+                if (duplicates[key].length < 2) {
+                    delete duplicates[key]
+                }
+            }
+
+            console.log(JSON.stringify(duplicates, null, 2))
+        } catch (error) {
+            this._hash = 0
+
+            console.error(error.message)
+        } finally {
+            if (this._hash > 0) {
+                this._hash = 0
+            }
         }
     }
 
@@ -128,6 +231,10 @@ class RootStore {
                 this.scanFiles()
 
                 break
+            case 'find-files':
+                this.createHash()
+
+                break
         }
 
         this.step = stepOrder[(index + 1) % stepOrder.length]
@@ -138,6 +245,10 @@ class RootStore {
         switch (this.step) {
             case 'find-files':
                 this._scanning = false
+
+                break
+            case 'compare-files':
+                this._hash = 0
 
                 break
         }
@@ -152,6 +263,8 @@ class RootStore {
         switch (this.step) {
             case 'find-files':
                 return this.scanning ? 'Abbrechen' : 'Zurück'
+            case 'compare-files':
+                return this.hashing ? 'Abbrechen' : 'Zurück'
         }
 
         return 'Zurück'
@@ -160,6 +273,7 @@ class RootStore {
     @computed
     get isBackButtonEnabled(): boolean {
         switch (this.step) {
+            case 'compare-files':
             case 'find-files':
                 return true
         }
@@ -176,6 +290,12 @@ class RootStore {
                 } catch (error) {
                     return false
                 }
+            }
+            case 'find-files': {
+                return !this.scanning && this.files.length > 0
+            }
+            case 'compare-files': {
+                return !this.hashing
             }
         }
 

@@ -13,7 +13,7 @@ export default class FileComparer extends React.Component<IFileComparerProps> {
     render(): JSX.Element {
         return (
             <div className={classNames(styles['fo-compare-files'], 'fo-step')}>
-                <button onClick={() => (store.step = 'inspect-duplicates')}>[Dateien vergleichen]</button>
+                {store.progress}% [{store.files.length}]
             </div>
         )
     }
