@@ -1,6 +1,8 @@
 import { remote } from 'electron'
-import { statSync } from 'fs'
+import { statSync, readdir, stat, Stats } from 'fs'
 import { observable, action, computed } from 'mobx'
+import { join } from 'path'
+import { promisify } from 'util'
 
 export type TStep =
     | 'choose-root'
@@ -25,12 +27,21 @@ interface IConfiguration {
     rootPath: string
 }
 
+interface IFileInfo {
+    readonly info: Stats
+    readonly path: string
+}
+
 class RootStore {
     @observable step: TStep = 'choose-root'
 
     @observable private readonly _configuration: IConfiguration = { rootPath: '' }
 
     @observable busy = 0
+
+    @observable readonly files: IFileInfo[] = []
+
+    @observable private _scanning = false
 
     constructor() {
         const config = localStorage.getItem(configName) || JSON.stringify(this._configuration)
@@ -42,8 +53,51 @@ class RootStore {
         return this._configuration.rootPath
     }
 
+    get scanning(): boolean {
+        return this._scanning
+    }
+
     private writeStore(): void {
         localStorage.setItem(configName, JSON.stringify(this._configuration))
+    }
+
+    private async scanFiles(): Promise<void> {
+        this._scanning = true
+
+        try {
+            this.files.splice(0)
+
+            const folders = [this.rootPath]
+
+            while (folders.length > 0 && this._scanning) {
+                const folder = folders.splice(0, 1)[0]
+                const content = await promisify(readdir)(folder)
+                const infos = await Promise.all(
+                    content
+                        .map((name) => join(folder, name))
+                        .map(
+                            async (path): Promise<IFileInfo | undefined> => {
+                                try {
+                                    return { info: await promisify(stat)(path), path }
+                                } catch (error) {
+                                    return undefined
+                                }
+                            }
+                        )
+                )
+
+                const dirs = infos.filter((i) => i?.info.isDirectory()).map((i) => i?.path) as string[]
+                const files = infos.filter((i) => i?.info.isFile()) as IFileInfo[]
+
+                folders.push(...dirs)
+
+                this.files.push(...files)
+            }
+        } catch (error) {
+            this.files.splice(0)
+        } finally {
+            this._scanning = false
+        }
     }
 
     @action
@@ -62,11 +116,25 @@ class RootStore {
     nextStep(): void {
         const index = stepOrder.findIndex((s) => s === this.step)
 
+        switch (this.step) {
+            case 'choose-root':
+                this.scanFiles()
+
+                break
+        }
+
         this.step = stepOrder[(index + 1) % stepOrder.length]
     }
 
     @action
     prevStep(): void {
+        switch (this.step) {
+            case 'find-files':
+                this._scanning = false
+
+                break
+        }
+
         const index = stepOrder.findIndex((s) => s === this.step)
 
         this.step = stepOrder[(index + stepOrder.length - 1) % stepOrder.length]
@@ -74,11 +142,21 @@ class RootStore {
 
     @computed
     get backButtonText(): string {
+        switch (this.step) {
+            case 'find-files':
+                return this.scanning ? 'Abbrechen' : 'Zurück'
+        }
+
         return 'Zurück'
     }
 
     @computed
     get isBackButtonEnabled(): boolean {
+        switch (this.step) {
+            case 'find-files':
+                return true
+        }
+
         return false
     }
 
