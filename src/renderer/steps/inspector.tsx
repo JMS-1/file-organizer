@@ -11,13 +11,23 @@ interface IFileInspectorProps {}
 @observer
 export default class FileInspector extends React.Component<IFileInspectorProps> {
     render(): JSX.Element {
+        const group = store.groups[store.groupIndex]
+
         return (
             <div className={classNames(styles['fo-file-inspector'], 'fo-step')}>
-                {store.groups.map((g, i) => (
-                    <div key={i}>
-                        {g.dirs.length}/{Object.keys(g.hashes).length}
-                    </div>
-                ))}
+                <div>
+                    {store.groupIndex + 1}/{store.groups.length}
+                </div>
+                {group && group.dirs.map((d) => <div key={d}>{d}</div>)}
+                <hr />
+                {group &&
+                    Object.keys(group.hashes).map((h) => (
+                        <ul key={h}>
+                            {group.hashes[h].map((f) => (
+                                <li key={f.path}>{f.path}</li>
+                            ))}
+                        </ul>
+                    ))}
             </div>
         )
     }

@@ -76,6 +76,8 @@ class RootStore {
 
     @observable private _hash = 0
 
+    @observable groupIndex = 0
+
     constructor() {
         const config = localStorage.getItem(configName) || '{}'
 
@@ -116,6 +118,7 @@ class RootStore {
         localStorage.setItem(configName, JSON.stringify(this._configuration))
     }
 
+    @action
     private async scanFiles(): Promise<void> {
         this._scanning = true
 
@@ -169,11 +172,13 @@ class RootStore {
         }
     }
 
+    @action
     private async createHash(): Promise<void> {
         this._hash = 1
 
         try {
             this.groups.splice(0)
+            this.groupIndex = 0
 
             const hashes = new HashMap()
 
@@ -216,13 +221,11 @@ class RootStore {
 
     @computed
     get isBackButtonVisible(): boolean {
-        return this.step !== 'choose-root'
+        return this.step !== 'choose-root' && this.step !== 'finished'
     }
 
     @action
     nextStep(): void {
-        const index = stepOrder.findIndex((s) => s === this.step)
-
         switch (this.step) {
             case 'choose-root':
                 this.scanFiles()
@@ -232,7 +235,19 @@ class RootStore {
                 this.createHash()
 
                 break
+            case 'confirm-delete':
+                this.groupIndex += 1
+
+                if (this.groupIndex < this.groups.length) {
+                    this.step = 'inspect-duplicates'
+
+                    return
+                }
+
+                break
         }
+
+        const index = stepOrder.findIndex((s) => s === this.step)
 
         this.step = stepOrder[(index + 1) % stepOrder.length]
     }
@@ -271,6 +286,7 @@ class RootStore {
     get isBackButtonEnabled(): boolean {
         switch (this.step) {
             case 'compare-files':
+            case 'confirm-delete':
             case 'find-files':
             case 'inspect-duplicates':
                 return true
@@ -294,6 +310,11 @@ class RootStore {
             }
             case 'compare-files': {
                 return !this.hashing
+            }
+            case 'confirm-delete':
+            case 'finished':
+            case 'inspect-duplicates': {
+                return true
             }
         }
 
