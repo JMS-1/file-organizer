@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, protocol } from 'electron'
 import * as path from 'path'
 import { format as formatUrl } from 'url'
 
@@ -17,6 +17,7 @@ function createMainWindow(): BrowserWindow {
         webPreferences: {
             devTools: !isProduction,
             nodeIntegration: true,
+            webSecurity: false,
         },
         width: 1280,
     })
@@ -67,5 +68,9 @@ app.on('activate', () => {
 
 // create main BrowserWindow when electron is ready
 app.on('ready', () => {
+    protocol.registerFileProtocol('file', (request, callback) =>
+        callback(decodeURIComponent(request.url.replace(/^file:\/\//, '')))
+    )
+
     mainWindow = createMainWindow()
 })

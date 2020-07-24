@@ -14,7 +14,7 @@ interface IDirectoryChooserProps {}
 export default class DirectoryChooser extends React.Component<IDirectoryChooserProps> {
     render(): JSX.Element {
         return (
-            <div className={classNames(styles['fo-choose-directory'], 'fo-step')}>
+            <div className={classNames(styles.directory, 'fo-step')}>
                 <div className={styles.selector}>
                     <input readOnly value={store.rootPath} />
                     <button onClick={this.browse}>...</button>

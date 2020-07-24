@@ -1,0 +1,6 @@
+.inspector:global(.fo-step) {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    height: calc(100% - 3em);
+    row-gap: 1em;
+}

@@ -12,7 +12,7 @@ interface IFileComparerProps {}
 export default class FileComparer extends React.Component<IFileComparerProps> {
     render(): JSX.Element {
         return (
-            <div className={classNames(styles['fo-compare-files'], 'fo-step')}>
+            <div className={classNames(styles.compare, 'fo-step')}>
                 {store.progress}% [{store.files.length}]
             </div>
         )

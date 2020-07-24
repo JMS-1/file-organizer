@@ -28,6 +28,7 @@
     "electron-webpack": "^2.8.2",
     "electron-webpack-ts": "^4.0.1",
     "eslint": "^7.5.0",
+    "file-type": "^14.6.2",
     "mobx": "^5.15.4",
     "mobx-react": "^6.2.2",
     "ncp": "^2.0.0",

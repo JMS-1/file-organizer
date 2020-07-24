@@ -11,6 +11,6 @@ interface IFileFinderProps {}
 @observer
 export default class FileFinder extends React.Component<IFileFinderProps> {
     render(): JSX.Element {
-        return <div className={classNames(styles['fo-find-files'], 'fo-step')}>{store.files.length}</div>
+        return <div className={classNames(styles.files, 'fo-step')}>{store.files.length}</div>
     }
 }

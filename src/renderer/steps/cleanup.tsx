@@ -12,7 +12,7 @@ interface IFileCleanerProps {}
 export default class FileCleaner extends React.Component<IFileCleanerProps> {
     render(): JSX.Element {
         return (
-            <div className={classNames(styles['fo-file-cleanup'], 'fo-step')}>
+            <div className={classNames(styles.cleanup, 'fo-step')}>
                 {store.groupIndex + 1}/{store.groups.length}
             </div>
         )
