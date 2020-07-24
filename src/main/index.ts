@@ -12,11 +12,13 @@ let mainWindow: BrowserWindow | null
 function createMainWindow(): BrowserWindow {
     const window = new BrowserWindow({
         autoHideMenuBar: true,
+        height: 1024,
         useContentSize: true,
         webPreferences: {
             devTools: !isProduction,
             nodeIntegration: true,
         },
+        width: 1280,
     })
 
     window.on('closed', () => {

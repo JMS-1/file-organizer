@@ -1,9 +1,11 @@
 import { createHash } from 'crypto'
 import { remote } from 'electron'
-import { statSync, readdir, stat, Stats, createReadStream } from 'fs'
+import { statSync, readdir, stat, createReadStream } from 'fs'
 import { observable, action, computed } from 'mobx'
 import { join } from 'path'
 import { promisify } from 'util'
+
+import { HashMap, IFileInfo, IGroupInfo } from './hashMap'
 
 export type TStep =
     | 'choose-root'
@@ -26,13 +28,8 @@ const stepOrder: TStep[] = [
 
 interface IConfiguration {
     maxFileSize: number
+    minFileSize: number
     rootPath: string
-}
-
-interface IFileInfo {
-    hash?: string
-    readonly info: Stats
-    readonly path: string
 }
 
 function getHash(path: string, abort: () => boolean): Promise<string> {
@@ -63,11 +60,17 @@ function getHash(path: string, abort: () => boolean): Promise<string> {
 class RootStore {
     @observable step: TStep = 'choose-root'
 
-    @observable private readonly _configuration: IConfiguration = { maxFileSize: 100 * 1024 * 1024, rootPath: '' }
+    @observable private readonly _configuration: IConfiguration = {
+        maxFileSize: 100 * 1024 * 1024,
+        minFileSize: 10 * 1024,
+        rootPath: '',
+    }
 
     @observable busy = 0
 
     @observable readonly files: IFileInfo[] = []
+
+    @observable readonly groups: IGroupInfo[] = []
 
     @observable private _scanning = false
 
@@ -85,6 +88,10 @@ class RootStore {
 
     get maxFileSize(): number {
         return this._configuration.maxFileSize
+    }
+
+    get minFileSize(): number {
+        return this._configuration.minFileSize
     }
 
     get scanning(): boolean {
@@ -139,7 +146,7 @@ class RootStore {
                     const dirs = infos.filter((i) => i?.info.isDirectory()).map((i) => i?.path) as string[]
 
                     const files = infos.filter(
-                        (i) => i?.info.isFile() && i.info.size <= this.maxFileSize
+                        (i) => i?.info.isFile() && i.info.size >= this.minFileSize && i.info.size <= this.maxFileSize
                     ) as IFileInfo[]
 
                     folders.push(...dirs)
@@ -166,7 +173,9 @@ class RootStore {
         this._hash = 1
 
         try {
-            const duplicates: Record<string, string[]> = {}
+            this.groups.splice(0)
+
+            const hashes = new HashMap()
 
             for (const file of this.files) {
                 if (!this.hashing) {
@@ -176,13 +185,7 @@ class RootStore {
                 try {
                     file.hash = await getHash(file.path, () => !this.hashing)
 
-                    const match = duplicates[file.hash]
-
-                    if (match) {
-                        match.push(file.path)
-                    } else {
-                        duplicates[file.hash] = [file.path]
-                    }
+                    hashes.add(file)
                 } catch (error) {
                     console.error(error.message)
                 }
@@ -192,13 +195,7 @@ class RootStore {
                 }
             }
 
-            for (const key of Object.keys(duplicates)) {
-                if (duplicates[key].length < 2) {
-                    delete duplicates[key]
-                }
-            }
-
-            console.log(JSON.stringify(duplicates, null, 2))
+            this.groups.push(...hashes.finish())
         } catch (error) {
             this._hash = 0
 
@@ -275,6 +272,7 @@ class RootStore {
         switch (this.step) {
             case 'compare-files':
             case 'find-files':
+            case 'inspect-duplicates':
                 return true
         }
 

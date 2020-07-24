@@ -13,7 +13,11 @@ export default class FileInspector extends React.Component<IFileInspectorProps> 
     render(): JSX.Element {
         return (
             <div className={classNames(styles['fo-file-inspector'], 'fo-step')}>
-                <button onClick={() => (store.step = 'confirm-delete')}>[Dateien zum Löschen auswählen]</button>
+                {store.groups.map((g, i) => (
+                    <div key={i}>
+                        {g.dirs.length}/{Object.keys(g.hashes).length}
+                    </div>
+                ))}
             </div>
         )
     }
