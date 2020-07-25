@@ -11,9 +11,16 @@ interface IFileCleanerProps {}
 @observer
 export default class FileCleaner extends React.Component<IFileCleanerProps> {
     render(): JSX.Element {
+        const group = store.groups[store.groupIndex]
+        const folders = Object.keys(store.selectedFolders).sort()
+        const files = Object.keys(group.hashes).length * folders.length
+
         return (
             <div className={classNames(styles.cleanup, 'fo-step')}>
-                {store.groupIndex + 1}/{store.groups.length}
+                {folders.map((f) => (
+                    <div key={f}>{f}</div>
+                ))}
+                <div>{files}</div>
             </div>
         )
     }

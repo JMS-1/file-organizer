@@ -1,8 +1,10 @@
 import { createHash } from 'crypto'
 import { remote } from 'electron'
+import { fromFile } from 'file-type'
 import { statSync, readdir, stat, createReadStream } from 'fs'
 import { observable, action, computed } from 'mobx'
 import { join } from 'path'
+import { pathToFileURL } from 'url'
 import { promisify } from 'util'
 
 import { HashMap, IFileInfo, IGroupInfo } from './hashMap'
@@ -78,7 +80,13 @@ class RootStore {
 
     @observable groupIndex = 0
 
-    @observable selectedFolders: Record<string, boolean> = {}
+    @observable selectedFolders: Record<number, boolean> = {}
+
+    @observable selectedHash = ''
+
+    @observable mimeType = ''
+
+    @observable selectedPath = ''
 
     constructor() {
         const config = localStorage.getItem(configName) || '{}'
@@ -182,7 +190,10 @@ class RootStore {
             this.groups.splice(0)
 
             this.groupIndex = 0
+            this.mimeType = ''
             this.selectedFolders = {}
+            this.selectedHash = ''
+            this.selectedPath = ''
 
             const hashes = new HashMap()
 
@@ -217,6 +228,25 @@ class RootStore {
     }
 
     @action
+    async selectHash(hash: string): Promise<void> {
+        this.mimeType = ''
+        this.selectedHash = hash
+        this.selectedPath = ''
+        this.selectedPath = this.groups[this.groupIndex].hashes[hash][0].path
+
+        try {
+            const result = await fromFile(this.selectedPath)
+            const mimeType = result?.mime || ''
+
+            if (this.selectedHash === hash) {
+                this.mimeType = mimeType
+            }
+        } catch (error) {
+            console.error(error.message)
+        }
+    }
+
+    @action
     setRootPath(path: string): void {
         this._configuration.rootPath = path
 
@@ -230,6 +260,8 @@ class RootStore {
 
     @action
     nextStep(): void {
+        let index = stepOrder.findIndex((s) => s === this.step)
+
         switch (this.step) {
             case 'choose-root':
                 this.scanFiles()
@@ -239,19 +271,34 @@ class RootStore {
                 this.createHash()
 
                 break
+            case 'inspect-duplicates':
+                if (Object.keys(this.selectedFolders).length < 1) {
+                    this.groupIndex += 1
+                    this.mimeType = ''
+                    this.selectedHash = ''
+                    this.selectedPath = ''
+
+                    if (this.groupIndex < this.groups.length) {
+                        index -= 1
+                    } else {
+                        index += 1
+                    }
+                }
+
+                break
             case 'confirm-delete':
                 this.groupIndex += 1
+                this.mimeType = ''
+                this.selectedFolders = {}
+                this.selectedHash = ''
+                this.selectedPath = ''
 
                 if (this.groupIndex < this.groups.length) {
-                    this.step = 'inspect-duplicates'
-
-                    return
+                    index -= 2
                 }
 
                 break
         }
-
-        const index = stepOrder.findIndex((s) => s === this.step)
 
         this.step = stepOrder[(index + 1) % stepOrder.length]
     }
@@ -265,6 +312,13 @@ class RootStore {
                 break
             case 'compare-files':
                 this._hash = 0
+
+                break
+            case 'inspect-duplicates':
+                this.groupIndex = 0
+                this.mimeType = ''
+                this.selectedHash = ''
+                this.selectedPath = ''
 
                 break
         }
@@ -313,12 +367,14 @@ class RootStore {
                 return !this.scanning && this.files.length > 0
             }
             case 'compare-files': {
-                return !this.hashing
+                return !this.hashing && this.groups.length > 0
             }
             case 'confirm-delete':
-            case 'finished':
-            case 'inspect-duplicates': {
+            case 'finished': {
                 return true
+            }
+            case 'inspect-duplicates': {
+                return Object.keys(this.selectedFolders).length < this.groups[this.groupIndex].dirs.length
             }
         }
 
@@ -328,6 +384,11 @@ class RootStore {
     @computed
     get nextButtonText(): string {
         return 'Weiter'
+    }
+
+    @computed
+    get selectedUri(): string {
+        return this.selectedPath && pathToFileURL(this.selectedPath).href
     }
 }
 

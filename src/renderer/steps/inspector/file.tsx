@@ -6,10 +6,10 @@ import * as React from 'react'
 import styles from './file.module.scss'
 
 import { IFileInfo } from '../../hashMap'
+import { store } from '../../store'
 
 interface IDuplicateFileProps {
     files: IFileInfo[]
-    select(hash: string): void
     selected: boolean
 }
 
@@ -29,5 +29,5 @@ export default class DuplicateFile extends React.Component<IDuplicateFileProps> 
         )
     }
 
-    private readonly select = (): void => this.props.select(this.props.files[0].hash || '')
+    private readonly select = (): Promise<void> => store.selectHash(this.props.files[0].hash || '')
 }
