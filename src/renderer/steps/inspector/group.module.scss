@@ -4,20 +4,6 @@
     row-gap: 0.5em;
     overflow: hidden;
 
-    > .folders {
-        white-space: nowrap;
-
-        > div {
-            &:first-child {
-                font-weight: bold;
-            }
-
-            + div {
-                margin-left: 1em;
-            }
-        }
-    }
-
     > .files {
         display: grid;
         grid-template-columns: 1fr 1fr;

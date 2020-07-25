@@ -7,14 +7,14 @@ import styles from './file.module.scss'
 
 import { IFileInfo } from '../../hashMap'
 
-interface IFolderGroupProps {
+interface IDuplicateFileProps {
     files: IFileInfo[]
     select(hash: string): void
     selected: boolean
 }
 
 @observer
-export default class DuplicateFile extends React.Component<IFolderGroupProps> {
+export default class DuplicateFile extends React.Component<IDuplicateFileProps> {
     render(): JSX.Element | null {
         const file = this.props.files[0]
 

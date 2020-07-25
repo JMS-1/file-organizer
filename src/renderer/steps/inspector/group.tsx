@@ -5,6 +5,7 @@ import * as React from 'react'
 import { pathToFileURL } from 'url'
 
 import DuplicateFile from './file'
+import Folder from './folder'
 import styles from './group.module.scss'
 
 import { store } from '../../store'
@@ -26,7 +27,7 @@ export default class FolderGroup extends React.Component<IFolderGroupProps> {
 
         return (
             <div className={styles.group}>
-                <div className={styles.folders}>{group && group.dirs.map((d) => <div key={d}>{d}</div>)}</div>
+                <div className={styles.folders}>{group && group.dirs.map((d) => <Folder key={d} path={d} />)}</div>
                 <div className={styles.files}>
                     <div className={styles.list}>
                         {Object.keys(group.hashes).map((h) => (

@@ -78,6 +78,8 @@ class RootStore {
 
     @observable groupIndex = 0
 
+    @observable selectedFolders: Record<string, boolean> = {}
+
     constructor() {
         const config = localStorage.getItem(configName) || '{}'
 
@@ -178,7 +180,9 @@ class RootStore {
 
         try {
             this.groups.splice(0)
+
             this.groupIndex = 0
+            this.selectedFolders = {}
 
             const hashes = new HashMap()
 
