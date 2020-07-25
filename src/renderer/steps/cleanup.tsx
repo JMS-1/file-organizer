@@ -12,7 +12,11 @@ interface IFileCleanerProps {}
 export default class FileCleaner extends React.Component<IFileCleanerProps> {
     render(): JSX.Element {
         const group = store.groups[store.groupIndex]
-        const folders = Object.keys(store.selectedFolders).sort()
+
+        const folders = Object.keys(store.selectedFolders)
+            .map((k) => group.dirs[parseInt(k, 10)])
+            .sort()
+
         const files = Object.keys(group.hashes).length * folders.length
 
         return (
