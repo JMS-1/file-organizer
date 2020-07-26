@@ -88,6 +88,10 @@ class RootStore {
 
     @observable selectedPath = ''
 
+    @observable pendingDeletes: string[] = []
+
+    @observable deleteCount = 0
+
     constructor() {
         const config = localStorage.getItem(configName) || '{}'
 
@@ -228,6 +232,42 @@ class RootStore {
     }
 
     @action
+    private async deleteFiles(): Promise<void> {
+        this.deleteCount = this.pendingDeletes.length
+
+        for (;;) {
+            const file = this.pendingDeletes[0]
+
+            if (!file) {
+                if (this.deleteCount > 0) {
+                    this.groups.splice(this.groupIndex, 1)
+                } else {
+                    this.groupIndex += 1
+                }
+
+                this.mimeType = ''
+                this.selectedFolders = {}
+                this.selectedHash = ''
+                this.selectedPath = ''
+
+                this.step = this.groupIndex < this.groups.length ? 'inspect-duplicates' : 'finished'
+
+                break
+            }
+
+            try {
+                console.log(file)
+
+                await new Promise((success) => window.setTimeout(success, 100))
+
+                this.pendingDeletes.splice(0, 1)
+            } catch (error) {
+                console.error(error.message)
+            }
+        }
+    }
+
+    @action
     async selectHash(hash: string): Promise<void> {
         this.mimeType = ''
         this.selectedHash = hash
@@ -283,24 +323,35 @@ class RootStore {
                     } else {
                         index += 1
                     }
+                } else {
+                    this.deleteCount = 0
+                    this.pendingDeletes = []
                 }
 
                 break
             case 'confirm-delete':
-                this.groupIndex += 1
-                this.mimeType = ''
-                this.selectedFolders = {}
-                this.selectedHash = ''
-                this.selectedPath = ''
+                this.deleteFiles()
 
-                if (this.groupIndex < this.groups.length) {
-                    index -= 2
-                }
-
-                break
+                return
         }
 
         this.step = stepOrder[(index + 1) % stepOrder.length]
+    }
+
+    @action
+    toggleDelete(): void {
+        if (this.pendingDeletes.length > 0) {
+            this.pendingDeletes.splice(0)
+        } else {
+            const index = new Set(Object.keys(this.selectedFolders).map((k) => parseInt(k, 10)))
+            const group = this.groups[this.groupIndex]
+
+            for (const hash of Object.keys(group.hashes)) {
+                const files = group.hashes[hash].filter((f, i) => index.has(i)).map((f) => f.path)
+
+                this.pendingDeletes.push(...files)
+            }
+        }
     }
 
     @action
@@ -321,6 +372,15 @@ class RootStore {
                 this.selectedPath = ''
 
                 break
+            case 'confirm-delete':
+                if (this.deleteCount > 0) {
+                    this.deleteCount = 0
+                    this.pendingDeletes.splice(0)
+
+                    return
+                }
+
+                break
         }
 
         const index = stepOrder.findIndex((s) => s === this.step)
@@ -330,14 +390,12 @@ class RootStore {
 
     @computed
     get backButtonText(): string {
-        switch (this.step) {
-            case 'find-files':
-                return this.scanning ? 'Abbrechen' : 'Zurück'
-            case 'compare-files':
-                return this.hashing ? 'Abbrechen' : 'Zurück'
-        }
+        const cancel =
+            (this.step == 'find-files' && this.scanning) ||
+            (this.step == 'compare-files' && this.hashing) ||
+            (this.step == 'confirm-delete' && this.deleteCount > 0)
 
-        return 'Zurück'
+        return cancel ? 'Abbrechen' : 'Zurück'
     }
 
     @computed
@@ -369,9 +427,11 @@ class RootStore {
             case 'compare-files': {
                 return !this.hashing && this.groups.length > 0
             }
-            case 'confirm-delete':
             case 'finished': {
                 return true
+            }
+            case 'confirm-delete': {
+                return this.deleteCount < 1 || this.pendingDeletes.length < 1
             }
             case 'inspect-duplicates': {
                 return Object.keys(this.selectedFolders).length < this.groups[this.groupIndex].dirs.length

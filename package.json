@@ -46,7 +46,7 @@
     "renderer": {
       "webpackConfig": "enableCssModules.js"
     },
-    "title": "File Organizer"
+    "title": "Dateiorganisator"
   },
   "eslintConfig": {
     "extends": "@insynergie"

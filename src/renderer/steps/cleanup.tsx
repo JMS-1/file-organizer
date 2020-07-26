@@ -25,7 +25,36 @@ export default class FileCleaner extends React.Component<IFileCleanerProps> {
                     <div key={f}>{f}</div>
                 ))}
                 <div>{files}</div>
+                <div className={styles.action}>
+                    <div
+                        className={classNames(
+                            styles.button,
+                            styles.yes,
+                            store.pendingDeletes.length > 0 && styles.active
+                        )}
+                        onClick={this.toggleDelete}
+                    >
+                        Löschen
+                    </div>
+                    <div
+                        className={classNames(
+                            styles.button,
+                            styles.no,
+                            store.pendingDeletes.length < 1 && styles.active
+                        )}
+                        onClick={this.toggleDelete}
+                    >
+                        Nicht löschen
+                    </div>
+                </div>
+                {store.deleteCount > 0 && (
+                    <div>
+                        {store.deleteCount - store.pendingDeletes.length}/{store.deleteCount}
+                    </div>
+                )}
             </div>
         )
     }
+
+    private readonly toggleDelete = (): void => store.toggleDelete()
 }

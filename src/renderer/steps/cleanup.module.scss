@@ -1,2 +1,45 @@
 .cleanup {
+    > .action {
+        display: grid;
+        grid-template-columns: repeat(2, auto);
+        width: fit-content;
+        margin: 1em auto;
+
+        > .button {
+            width: 10em;
+            padding: 0.2em 0.4em;
+            margin: 0.2em;
+            font-size: 1.5em;
+            color: rgba(#000000, 0.5);
+            text-align: center;
+            cursor: pointer;
+            border-radius: 6px;
+
+            &.yes {
+                background: #ff0000;
+
+                &.active {
+                    @keyframes buttonColoring {
+                        from {
+                            background: #ff0000;
+                        }
+                        to {
+                            background: #ffa3a3;
+                        }
+                    }
+
+                    animation: buttonColoring 1s infinite;
+                }
+            }
+
+            &.no {
+                background: #00ff00;
+            }
+
+            &.active {
+                font-weight: bold;
+                color: unset;
+            }
+        }
+    }
 }

@@ -33,26 +33,28 @@ export class HashMap {
         const groups: Record<string, IGroupInfo> = {}
 
         for (const hash of Object.keys(this._map)) {
-            const files = this._map[hash]
+            const paths = this._map[hash]
 
-            if (files.length < 2) {
+            if (paths.length < 2) {
                 continue
             }
 
-            const dirs = files.map((f) => dirname(f.path)).sort()
+            const dirs = paths
+                .map((f, index) => ({ dir: dirname(f.path), index }))
+                .sort((l, r) => l.dir.localeCompare(r.dir))
 
             const key = dirs
-                .map((d) => d.toLowerCase())
+                .map((d) => d.dir.toLowerCase())
                 .sort()
                 .join('\n')
 
             let group = groups[key]
 
             if (!group) {
-                groups[key] = group = { dirs, hashes: {} }
+                groups[key] = group = { dirs: dirs.map((d) => d.dir), hashes: {} }
             }
 
-            group.hashes[hash] = files
+            group.hashes[hash] = dirs.map((d) => paths[d.index])
         }
 
         return Object.keys(groups)
