@@ -257,7 +257,7 @@ class RootStore {
             }
 
             try {
-                await trash(file)
+                await trash(file, { glob: false })
             } catch (error) {
                 console.error(error.message)
             }
