@@ -5,7 +5,6 @@ core
 
 config.custom.json
 
-
 /dist/**/*
 !/dist/File Organizer-*.AppImage
 !/dist/File Organizer *.exe
