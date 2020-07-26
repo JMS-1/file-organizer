@@ -1,6 +1,5 @@
-.inspector:global(.fo-step) {
+.inspector > div {
     display: grid;
-    grid-template-rows: auto 1fr;
-    row-gap: 1em;
+    grid-template-rows: auto auto 1fr;
     overflow: hidden;
 }

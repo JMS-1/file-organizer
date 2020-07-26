@@ -1,4 +1,10 @@
 .cleanup > div {
+    > .folder {
+        margin-left: 2em;
+        font-weight: bold;
+        white-space: nowrap;
+    }
+
     > .action {
         display: grid;
         grid-template-columns: repeat(2, auto);

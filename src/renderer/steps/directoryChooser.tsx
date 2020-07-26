@@ -10,15 +10,36 @@ import { store } from '../store'
 
 interface IDirectoryChooserProps {}
 
+function makeBytes(bytes: number): string {
+    let str = `${bytes}`
+
+    for (let n = 3; str.length > n; n += 4) {
+        str = `${str.substr(0, str.length - n)}.${str.substr(str.length - n)}`
+    }
+
+    return str
+}
+
 @observer
 export default class DirectoryChooser extends React.Component<IDirectoryChooserProps> {
     render(): JSX.Element {
         return (
             <div className={classNames(styles.directory, 'fo-step')}>
-                <h1>Dateiverzeichnis auswählen</h1>
+                <h1>Schritt 1: Ordner auswählen</h1>
                 <div>
-                    <input readOnly value={store.rootPath} />
-                    <button onClick={this.browse}>...</button>
+                    <p>Als erstest kannst Du einen Ordner auswählen, der nach Duplikaten durchsucht werden soll.</p>
+                    <div className={styles.directory}>
+                        <input readOnly value={store.rootPath} />
+                        <button onClick={this.browse}>...</button>
+                    </div>
+                    <p>
+                        Sobald Du rechts unten <strong>Suchen</strong> drückst werden alle Dateien ermittelt, die sich
+                        direkt in diesem Ordner oder einem darin enthaltenen Ordner befinden.
+                    </p>
+                    <p>
+                        Berücksichtigt werden alle Dateien, die mindestens {makeBytes(store.minFileSize)} Bytes groß
+                        sind, deren Größe allerdings {makeBytes(store.maxFileSize)} Bytes nicht überschreitet.
+                    </p>
                 </div>
             </div>
         )

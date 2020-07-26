@@ -1,6 +1,7 @@
 .directory > div {
-    display: grid;
-    grid-template-rows: min-content;
-    grid-template-columns: 1fr auto;
-    column-gap: 0.5em;
+    > .directory {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        column-gap: 0.5em;
+    }
 }
