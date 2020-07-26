@@ -9,6 +9,11 @@ interface IFinishedProps {}
 @observer
 export default class Finished extends React.Component<IFinishedProps> {
     render(): JSX.Element {
-        return <div className={classNames(styles.done, 'fo-step')}>[Fertig]</div>
+        return (
+            <div className={classNames(styles.done, 'fo-step')}>
+                <h1>Fertig</h1>
+                <div />
+            </div>
+        )
     }
 }

@@ -1,9 +1,6 @@
-.directory {
-    padding: 1em;
-
-    > .selector {
-        display: grid;
-        grid-template-columns: 1fr auto;
-        column-gap: 0.5em;
-    }
+.directory > div {
+    display: grid;
+    grid-template-rows: min-content;
+    grid-template-columns: 1fr auto;
+    column-gap: 0.5em;
 }

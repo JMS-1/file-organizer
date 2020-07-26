@@ -26,35 +26,38 @@ export default class FileCleaner extends React.Component<IFileCleanerProps> {
 
         return (
             <div className={classNames(styles.cleanup, 'fo-step')}>
-                {folders.map((f) => (
-                    <div key={f}>{f}</div>
-                ))}
-                <div>{files}</div>
-                <div className={styles.action}>
-                    <div
-                        className={classNames(
-                            styles.button,
-                            styles.yes,
-                            store.pendingDeletes.length > 0 && styles.active
-                        )}
-                        onClick={this.enable}
-                    >
-                        Löschen
+                <h1>Löschen bestätigen</h1>
+                <div>
+                    {folders.map((f) => (
+                        <div key={f}>{f}</div>
+                    ))}
+                    <div>{files}</div>
+                    <div className={styles.action}>
+                        <div
+                            className={classNames(
+                                styles.button,
+                                styles.yes,
+                                store.pendingDeletes.length > 0 && styles.active
+                            )}
+                            onClick={this.enable}
+                        >
+                            Löschen
+                        </div>
+                        <div
+                            className={classNames(
+                                styles.button,
+                                styles.no,
+                                store.pendingDeletes.length < 1 && styles.active
+                            )}
+                            onClick={this.disable}
+                        >
+                            Nicht löschen
+                        </div>
                     </div>
-                    <div
-                        className={classNames(
-                            styles.button,
-                            styles.no,
-                            store.pendingDeletes.length < 1 && styles.active
-                        )}
-                        onClick={this.disable}
-                    >
-                        Nicht löschen
-                    </div>
+                    {store.deleteCount > 0 && (
+                        <Progress max={store.deleteCount} value={store.deleteCount - store.pendingDeletes.length} />
+                    )}
                 </div>
-                {store.deleteCount > 0 && (
-                    <Progress max={store.deleteCount} value={store.deleteCount - store.pendingDeletes.length} />
-                )}
             </div>
         )
     }

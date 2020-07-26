@@ -1,12 +1,25 @@
 .root {
     position: relative;
+    display: grid;
+    grid-template-rows: 1fr auto;
     height: 100%;
     overflow: hidden;
 
     > :global(.fo-step) {
-        height: 100%;
+        display: grid;
+        grid-template-rows: auto 1fr;
+        height: calc(100% - 1em);
         padding: 0.5em;
         overflow: hidden;
+
+        > :first-child {
+            white-space: nowrap;
+        }
+
+        > :last-child {
+            width: 100%;
+            overflow: auto;
+        }
     }
 
     &.busy {
@@ -15,13 +28,10 @@
     }
 
     > .actions {
-        position: absolute;
-        right: 0;
-        bottom: 0;
-        left: 0;
         display: flex;
         justify-content: space-between;
         padding: 0.5em;
+        border-top: 1px solid #888888;
 
         > button {
             padding: 0.2em 0.5em;

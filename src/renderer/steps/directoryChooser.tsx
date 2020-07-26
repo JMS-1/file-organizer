@@ -15,7 +15,8 @@ export default class DirectoryChooser extends React.Component<IDirectoryChooserP
     render(): JSX.Element {
         return (
             <div className={classNames(styles.directory, 'fo-step')}>
-                <div className={styles.selector}>
+                <h1>Dateiverzeichnis auswählen</h1>
+                <div>
                     <input readOnly value={store.rootPath} />
                     <button onClick={this.browse}>...</button>
                 </div>

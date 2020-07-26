@@ -14,6 +14,7 @@ export default class FileComparer extends React.Component<IFileComparerProps> {
     render(): JSX.Element {
         return (
             <div className={classNames(styles.compare, 'fo-step')}>
+                <h1>Verzeichnisse zum Löschen auswählen</h1>
                 <Progress max={100} value={store.progress} />
             </div>
         )
