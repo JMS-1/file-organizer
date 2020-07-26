@@ -6,6 +6,9 @@
     "linux": {
       "target": "AppImage"
     },
+    "win": {
+      "target": "portable"
+    },
     "productName": "File Organizer"
   },
   "dependencies": {
