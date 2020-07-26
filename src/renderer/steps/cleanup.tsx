@@ -3,6 +3,7 @@ import { observer } from 'mobx-react'
 import * as React from 'react'
 
 import styles from './cleanup.module.scss'
+import Progress from './progress'
 
 import { store } from '../store'
 
@@ -10,8 +11,12 @@ interface IFileCleanerProps {}
 
 @observer
 export default class FileCleaner extends React.Component<IFileCleanerProps> {
-    render(): JSX.Element {
+    render(): JSX.Element | null {
         const group = store.groups[store.groupIndex]
+
+        if (!group) {
+            return null
+        }
 
         const folders = Object.keys(store.selectedFolders)
             .map((k) => group.dirs[parseInt(k, 10)])
@@ -32,7 +37,7 @@ export default class FileCleaner extends React.Component<IFileCleanerProps> {
                             styles.yes,
                             store.pendingDeletes.length > 0 && styles.active
                         )}
-                        onClick={this.toggleDelete}
+                        onClick={this.enable}
                     >
                         Löschen
                     </div>
@@ -42,19 +47,19 @@ export default class FileCleaner extends React.Component<IFileCleanerProps> {
                             styles.no,
                             store.pendingDeletes.length < 1 && styles.active
                         )}
-                        onClick={this.toggleDelete}
+                        onClick={this.disable}
                     >
                         Nicht löschen
                     </div>
                 </div>
                 {store.deleteCount > 0 && (
-                    <div>
-                        {store.deleteCount - store.pendingDeletes.length}/{store.deleteCount}
-                    </div>
+                    <Progress max={store.deleteCount} value={store.deleteCount - store.pendingDeletes.length} />
                 )}
             </div>
         )
     }
 
-    private readonly toggleDelete = (): void => store.toggleDelete()
+    private readonly enable = (): void => store.enableDelete(true)
+
+    private readonly disable = (): void => store.enableDelete(false)
 }

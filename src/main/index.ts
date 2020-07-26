@@ -22,6 +22,8 @@ function createMainWindow(): BrowserWindow {
         width: 1280,
     })
 
+    window.setMenu(null)
+
     window.on('closed', () => {
         mainWindow = null
     })

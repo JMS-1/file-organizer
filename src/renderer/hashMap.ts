@@ -43,10 +43,7 @@ export class HashMap {
                 .map((f, index) => ({ dir: dirname(f.path), index }))
                 .sort((l, r) => l.dir.localeCompare(r.dir))
 
-            const key = dirs
-                .map((d) => d.dir.toLowerCase())
-                .sort()
-                .join('\n')
+            const key = dirs.map((d) => d.dir.toLowerCase()).join('\n')
 
             let group = groups[key]
 

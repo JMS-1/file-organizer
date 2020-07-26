@@ -16,7 +16,7 @@
             border-radius: 6px;
 
             &.yes {
-                background: #ff0000;
+                background: #ffa3a3;
 
                 &.active {
                     @keyframes buttonColoring {
@@ -28,7 +28,7 @@
                         }
                     }
 
-                    animation: buttonColoring 1s infinite;
+                    animation: buttonColoring 500ms infinite alternate;
                 }
             }
 

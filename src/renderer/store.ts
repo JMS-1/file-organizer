@@ -1,7 +1,7 @@
 import { createHash } from 'crypto'
 import { remote } from 'electron'
 import { fromFile } from 'file-type'
-import { statSync, readdir, stat, createReadStream } from 'fs'
+import { statSync, readdir, stat, createReadStream, unlink } from 'fs'
 import { observable, action, computed } from 'mobx'
 import { join } from 'path'
 import { pathToFileURL } from 'url'
@@ -256,14 +256,12 @@ class RootStore {
             }
 
             try {
-                console.log(file)
-
-                await new Promise((success) => window.setTimeout(success, 100))
-
-                this.pendingDeletes.splice(0, 1)
+                await promisify(unlink)(file)
             } catch (error) {
                 console.error(error.message)
             }
+
+            this.pendingDeletes.splice(0, 1)
         }
     }
 
@@ -339,18 +337,20 @@ class RootStore {
     }
 
     @action
-    toggleDelete(): void {
-        if (this.pendingDeletes.length > 0) {
-            this.pendingDeletes.splice(0)
-        } else {
-            const index = new Set(Object.keys(this.selectedFolders).map((k) => parseInt(k, 10)))
-            const group = this.groups[this.groupIndex]
+    enableDelete(enable: boolean): void {
+        this.pendingDeletes.splice(0)
 
-            for (const hash of Object.keys(group.hashes)) {
-                const files = group.hashes[hash].filter((f, i) => index.has(i)).map((f) => f.path)
+        if (!enable) {
+            return
+        }
 
-                this.pendingDeletes.push(...files)
-            }
+        const index = new Set(Object.keys(this.selectedFolders).map((k) => parseInt(k, 10)))
+        const group = this.groups[this.groupIndex]
+
+        for (const hash of Object.keys(group.hashes)) {
+            const files = group.hashes[hash].filter((f, i) => index.has(i)).map((f) => f.path)
+
+            this.pendingDeletes.push(...files)
         }
     }
 
@@ -443,6 +443,27 @@ class RootStore {
 
     @computed
     get nextButtonText(): string {
+        switch (this.step) {
+            case 'choose-root':
+                return 'Suchen'
+            case 'find-files':
+                return 'Vergleichen'
+            case 'finished':
+                return 'Nochmal'
+            case 'inspect-duplicates':
+                if (Object.keys(this.selectedFolders).length < 1) {
+                    break
+                }
+
+                return 'Löschen'
+            case 'confirm-delete':
+                if (this.pendingDeletes.length < 1) {
+                    break
+                }
+
+                return 'Löschen'
+        }
+
         return 'Weiter'
     }
 

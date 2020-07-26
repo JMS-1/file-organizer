@@ -6,6 +6,7 @@ import FolderGroup from './group'
 import styles from './inspector.module.scss'
 
 import { store } from '../../store'
+import Progress from '../progress'
 
 interface IFileInspectorProps {}
 
@@ -14,9 +15,7 @@ export default class FileInspector extends React.Component<IFileInspectorProps> 
     render(): JSX.Element {
         return (
             <div className={classNames(styles.inspector, 'fo-step')}>
-                <div>
-                    {store.groupIndex + 1}/{store.groups.length}
-                </div>
+                <Progress max={store.groups.length} value={store.groupIndex + 1} />
                 <FolderGroup />
             </div>
         )
