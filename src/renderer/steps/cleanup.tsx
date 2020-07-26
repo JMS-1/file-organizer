@@ -45,8 +45,8 @@ export default class FileCleaner extends React.Component<IFileCleanerProps> {
                         Auswahl jetzt noch korrigieren.
                     </p>
                     <p>
-                        Wenn Du rechts unten <strong>Löschen</strong> drückst, dann {makeCount(files)} in den Papierkorb
-                        verschoben. Es wird zwar während des Löschvorgangs ein Fortschrittsbalken angezeigt und der
+                        Wenn Du rechts unten <strong>Löschen</strong> drückst, dann {makeCount(files)} unwiederbringlich
+                        gelöscht. Es wird zwar während des Löschvorgangs ein Fortschrittsbalken angezeigt und der
                         Vorgang kann links unten durch <strong>Abbrechen</strong> vorzeitig beendet werden, allerdings
                         ist der Ablauf im Allgemeinen sehr zügig, so dass eine vorschnelle Entscheidung selten
                         korrigiert werden kann.

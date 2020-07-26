@@ -1,7 +1,14 @@
 .directory > div {
-    > .directory {
+    display: grid;
+    grid-template-rows: repeat(4, auto) 1fr;
+
+    > .input {
         display: grid;
         grid-template-columns: 1fr auto;
         column-gap: 0.5em;
+    }
+
+    > p:last-child {
+        align-self: end;
     }
 }

@@ -28,7 +28,7 @@ export default class DirectoryChooser extends React.Component<IDirectoryChooserP
                 <h1>Schritt 1: Ordner auswählen</h1>
                 <div>
                     <p>Als erstest kannst Du einen Ordner auswählen, der nach Duplikaten durchsucht werden soll.</p>
-                    <div className={styles.directory}>
+                    <div className={styles.input}>
                         <input readOnly value={store.rootPath} />
                         <button onClick={this.browse}>...</button>
                     </div>
@@ -39,6 +39,11 @@ export default class DirectoryChooser extends React.Component<IDirectoryChooserP
                     <p>
                         Berücksichtigt werden alle Dateien, die mindestens {makeBytes(store.minFileSize)} Bytes groß
                         sind, deren Größe allerdings {makeBytes(store.maxFileSize)} Bytes nicht überschreitet.
+                    </p>
+                    <p>
+                        <strong>Achtung:</strong> die Verwendung dieser Anwendung erfolgt vollständig auf eigene Gefahr.
+                        Sie wurde zwar mit größtmöglicher Sorgfalt erstellt und getestet, trotzdem kann keinerlei Gewähr
+                        für möglicherweise fälschliche Löschoperationen übernommen werden.
                     </p>
                 </div>
             </div>

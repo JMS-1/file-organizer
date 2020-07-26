@@ -26,7 +26,7 @@ export default class FileComparer extends React.Component<IFileComparerProps> {
                     <Progress max={100} value={store.progress} />
                     <p>
                         Sind alle Dateien miteinander verglichen, so kannst Du rechts unten durch Drücken von{' '}
-                        <strong>Weiter</strong> die Vergleichsergebnisse erst einmal in Aufgenschein nehmen. Wenn eine
+                        <strong>Weiter</strong> die Vergleichsergebnisse erst einmal in Augenschein nehmen. Wenn eine
                         Datei in mehreren Ordnern aufgefunden wurde, so wird dazu immer erst einmal die Liste der Ordner
                         aufgeführt, in denen die Datei gefunden wurde.
                     </p>
