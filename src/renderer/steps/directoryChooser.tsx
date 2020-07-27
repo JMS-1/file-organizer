@@ -27,7 +27,7 @@ export default class DirectoryChooser extends React.Component<IDirectoryChooserP
             <div className={classNames(styles.directory, 'fo-step')}>
                 <h1>Schritt 1: Ordner auswählen</h1>
                 <div>
-                    <p>Als erstest kannst Du einen Ordner auswählen, der nach Duplikaten durchsucht werden soll.</p>
+                    <p>Als erstes kannst Du einen Ordner auswählen, der nach Duplikaten durchsucht werden soll.</p>
                     <div className={styles.input}>
                         <input readOnly value={store.rootPath} />
                         <button onClick={this.browse}>...</button>

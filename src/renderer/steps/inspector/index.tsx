@@ -18,7 +18,7 @@ export default class FileInspector extends React.Component<IFileInspectorProps> 
                 <h1>Schritt 4: Dateien zum Löschen auswählen.</h1>
                 <div>
                     <p>
-                        Der Fortschrittsbalken zeigt Dir, wie viele Gruppen von Duplikaten von dir schon bearbeitet und
+                        Der Fortschrittsbalken zeigt Dir, wie viele Gruppen von Duplikaten von Dir schon bearbeitet und
                         bereinigt wurden.
                     </p>
                     <Progress max={store.groups.length} value={store.groupIndex + 1} />

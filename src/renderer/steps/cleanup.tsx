@@ -45,20 +45,14 @@ export default class FileCleaner extends React.Component<IFileCleanerProps> {
                         Auswahl jetzt noch korrigieren.
                     </p>
                     <p>
-                        Wenn Du rechts unten <strong>Löschen</strong> drückst, dann {makeCount(files)} unwiederbringlich
-                        gelöscht. Es wird zwar während des Löschvorgangs ein Fortschrittsbalken angezeigt und der
-                        Vorgang kann links unten durch <strong>Abbrechen</strong> vorzeitig beendet werden, allerdings
-                        ist der Ablauf im Allgemeinen sehr zügig, so dass eine vorschnelle Entscheidung selten
-                        korrigiert werden kann.
-                    </p>
-                    <p>
-                        Zu Deiner eigenen Sicherheit musst Du daher hier das Löschen noch einmal explizit durch Klicken
-                        auf <strong>Löschen</strong> bestätigen - <strong>Nicht löschen</strong> macht das wieder
-                        rückgängig. Mit der Bestätigung zum Löschen ändert sich rechts unten die Beschriftung von{' '}
-                        <strong>Weiter</strong> auf <strong>Löschen</strong> und es wird Dir optisch signalisiert, dass
-                        es nun gefährlich wird. Es gibt keine weitere Sicherheitsabfragen mehr, <strong>Löschen</strong>{' '}
-                        rechts unten beginnt mit dem Entfernen der Duplikate und zeigt dann im Allgemeinen die nächste
-                        Gruppe von Duplikaten zur Untersuchung durch Dich an.
+                        Zu Deiner eigenen Sicherheit musst Du das Löschen noch einmal explizit durch Klicken auf die
+                        rote <strong>Löschen</strong> Schaltfläche bestätigen - mit dem grünen{' '}
+                        <strong>Nicht löschen</strong> machst Du das wieder rückgängig. Mit der Bestätigung zum Löschen
+                        ändert sich rechts unten die Beschriftung von <strong>Weiter</strong> auf{' '}
+                        <strong>Löschen</strong> und es wird Dir optisch signalisiert, dass es nun gefährlich wird. Es
+                        gibt keine weitere Sicherheitsabfragen mehr, <strong>Löschen</strong> rechts unten beginnt mit
+                        dem Entfernen der Duplikate und zeigt dann im Allgemeinen die nächste Gruppe von Duplikaten zur
+                        Untersuchung durch Dich an.
                     </p>
                     <div className={styles.action}>
                         <div
@@ -82,6 +76,13 @@ export default class FileCleaner extends React.Component<IFileCleanerProps> {
                             Nicht löschen
                         </div>
                     </div>
+                    <p>
+                        <strong>Also</strong>: Wenn Du rechts unten <strong>Löschen</strong> drückst, dann{' '}
+                        {makeCount(files)} unwiederbringlich gelöscht. Es wird zwar während des Löschvorgangs ein
+                        Fortschrittsbalken angezeigt und der Vorgang kann links unten durch <strong>Abbrechen</strong>{' '}
+                        vorzeitig beendet werden, allerdings ist der Ablauf im Allgemeinen sehr zügig, so dass eine
+                        vorschnelle Entscheidung selten korrigiert werden kann.
+                    </p>
                     {store.deleteCount > 0 && (
                         <Progress max={store.deleteCount} value={store.deleteCount - store.pendingDeletes.length} />
                     )}

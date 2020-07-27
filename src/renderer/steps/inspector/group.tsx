@@ -21,11 +21,11 @@ export default class FolderGroup extends React.Component<IFolderGroupProps> {
         return (
             <div className={styles.group}>
                 <p>
-                    Als erstes siehst Du die Liste der Ordner, in denen identische Duplikate gefunden wurden. Durch
-                    Anklicken kannst Du festlegen, dass alle der unten angezeigten Duplikate aus dem Ordner entfernt
-                    werden. Bei einem so ausgewählten Ordner ist der Mülleimer links dann rot markiert - ein weiterer
-                    Klick auf den Ordner macht die Auswahl wirder rückgängig. Bitte beachte, dass Du nur Duplikate
-                    entfernen kannst: sobald Du <strong>alle</strong> Ordner markiert hast, wird rechts unten{' '}
+                    Als erstes siehst Du die Liste der Ordner, in denen identische Dateien gefunden wurden. Durch
+                    Anklicken kannst Du festlegen, dass alle der unten angezeigten Duplikate aus einem Ordner entfernt
+                    werden sollen. Bei einem so ausgewählten Ordner ist der Mülleimer links dann rot markiert - ein
+                    weiterer Klick auf den Ordner macht die Auswahl wieder rückgängig. Bitte beachte, dass Du nur
+                    Duplikate entfernen kannst: sobald Du <strong>alle</strong> Ordner markiert hast, wird rechts unten{' '}
                     <strong>Löschen</strong> deaktiviert.
                 </p>
                 <div className={styles.folders}>
@@ -39,9 +39,9 @@ export default class FolderGroup extends React.Component<IFolderGroupProps> {
                     <strong>Zurück</strong> links unten gelangst Du zurück zur Suche nach Duplikaten.
                 </p>
                 <p>
-                    Wenn Du Dir eines der Duplikate in der nun folgenden Liste anschauen möchtest, dann klicke es
-                    einfach an. Handelt es sich um ein Bild, ein Video oder eine Tonaufzeichnung, so kannst Du sie Dir
-                    dann rechts daneben anschauen respektive anhören.
+                    Wenn Du Dir ein Duplikate in der folgenden Liste anschauen möchtest, dann klicke es einfach an.
+                    Handelt es sich um ein Bild, ein Video oder eine Tonaufzeichnung, so kannst Du sie Dir dann rechts
+                    daneben anschauen respektive anhören.
                 </p>
                 <div className={styles.files}>
                     <div className={styles.list}>
