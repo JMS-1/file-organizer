@@ -14,3 +14,7 @@ In diesem Projekt habe ich versucht mich in folgenden Aspekten etwas weiter zu e
 
 Ganz interessant waren zum Beispiel die kleinen Tricks zum Zugriff auf lokale Dateien für die Vorschau (via *pathToFileURL*, *webSecurity*, *registerFileProtocol* und *decodeUriComponent*).
 
+## Ausführbare Anwendung
+
+[Linux](blob/master/dist/File%20Organizer-1.0.0.AppImage)
+[Windows](blob/master/dist/File%20Organizer%201.0.0.exe)
