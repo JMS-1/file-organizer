@@ -1,4 +1,4 @@
-.folder {
+:local(.folder) {
     display: grid;
     grid-template-columns: auto 1fr;
     align-items: center;
@@ -8,11 +8,11 @@
     cursor: pointer;
     column-gap: 0.5em;
 
-    > .icon {
+    > :local(.icon) {
         width: 1em;
         overflow: hidden;
 
-        &.selected {
+        &:local(.selected) {
             fill: #ff0000;
         }
     }

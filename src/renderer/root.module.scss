@@ -1,11 +1,11 @@
-.root {
+:local(.root) {
     position: relative;
     display: grid;
     grid-template-rows: 1fr auto;
     height: 100%;
     overflow: hidden;
 
-    > :global(.fo-step) {
+    > .fo-step {
         display: grid;
         grid-template-rows: auto 1fr;
         height: calc(100% - 1em);
@@ -27,12 +27,12 @@
         }
     }
 
-    &.busy {
+    &:local(.busy) {
         pointer-events: none;
         opacity: 0.5;
     }
 
-    > .actions {
+    > :local(.actions) {
         display: flex;
         justify-content: space-between;
         padding: 0.5em;
@@ -44,16 +44,16 @@
             border-radius: 0.5em;
             box-shadow: 1px 1px 0 rgba(#444444, 0.5);
 
-            &.hidden,
-            &.disabled {
+            &:local(.hidden),
+            &:local(.disabled) {
                 pointer-events: none;
             }
 
-            &.disabled {
+            &:local(.disabled) {
                 opacity: 0.2;
             }
 
-            &.hidden {
+            &:local(.hidden) {
                 opacity: 0;
             }
         }

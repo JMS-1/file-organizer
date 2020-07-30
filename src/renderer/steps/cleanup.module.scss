@@ -1,17 +1,17 @@
-.cleanup > div {
-    > .folder {
+:local(.cleanup) > div {
+    > :local(.folder) {
         margin-left: 2em;
         font-weight: bold;
         white-space: nowrap;
     }
 
-    > .action {
+    > :local(.action) {
         display: grid;
         grid-template-columns: repeat(2, auto);
         width: fit-content;
         margin: 1em auto;
 
-        > .button {
+        > :local(.button) {
             width: 10em;
             padding: 0.2em 0.4em;
             margin: 0.2em;
@@ -21,10 +21,10 @@
             cursor: pointer;
             border-radius: 6px;
 
-            &.yes {
+            &:local(.yes) {
                 background: #ffa3a3;
 
-                &.active {
+                &:local(.active) {
                     @keyframes buttonColoring {
                         from {
                             background: #ff0000;
@@ -38,11 +38,11 @@
                 }
             }
 
-            &.no {
+            &:local(.no) {
                 background: #00ff00;
             }
 
-            &.active {
+            &:local(.active) {
                 font-weight: bold;
                 color: unset;
             }

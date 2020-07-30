@@ -1,4 +1,4 @@
-.inspector > div {
+:local(.inspector) > div {
     display: grid;
     grid-template-rows: auto auto 1fr;
     overflow: hidden;

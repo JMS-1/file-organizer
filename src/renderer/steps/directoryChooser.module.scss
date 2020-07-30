@@ -1,8 +1,8 @@
-.directory > div {
+:local(.directory) > div {
     display: grid;
     grid-template-rows: repeat(4, auto) 1fr;
 
-    > .input {
+    > :local(.input) {
         display: grid;
         grid-template-columns: 1fr auto;
         column-gap: 0.5em;

@@ -46,9 +46,6 @@
         "webpack": "^4.44.0"
     },
     "electronWebpack": {
-        "renderer": {
-            "webpackConfig": "enableCssModules.js"
-        },
         "title": "Dateiorganisator"
     },
     "eslintConfig": {
