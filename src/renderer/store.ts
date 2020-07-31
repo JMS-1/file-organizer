@@ -368,6 +368,7 @@ class RootStore {
             case 'inspect-duplicates':
                 this.groupIndex = 0
                 this.mimeType = ''
+                this.selectedFolders = {}
                 this.selectedHash = ''
                 this.selectedPath = ''
 
