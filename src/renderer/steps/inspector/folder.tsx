@@ -20,11 +20,11 @@ export default class Folder extends React.Component<IFolderProps> {
         const { path, index } = this.props
 
         return (
-            <div className={styles.folder} onClick={this.onClick}>
-                <div
-                    className={classNames(styles.icon, store.selectedFolders[index] && styles.selected)}
-                    dangerouslySetInnerHTML={{ __html: trashSvg }}
-                />
+            <div
+                className={classNames(styles.folder, store.selectedFolders[index] && styles.selected)}
+                onClick={this.onClick}
+            >
+                <div className={styles.icon} dangerouslySetInnerHTML={{ __html: trashSvg }} />
                 {path}
             </div>
         )

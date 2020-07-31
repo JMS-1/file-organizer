@@ -3,7 +3,7 @@
     grid-template-columns: auto 1fr;
     column-gap: 0.5em;
     align-items: center;
-    overflow: hidden;
+    margin-right: 0.5em;
     font-weight: bold;
     white-space: nowrap;
     cursor: pointer;
@@ -11,8 +11,12 @@
     > :local(.icon) {
         width: 1em;
         overflow: hidden;
+    }
 
-        &:local(.selected) {
+    &:local(.selected) {
+        color: #ff0000;
+
+        > :local(.icon) {
             fill: #ff0000;
         }
     }
