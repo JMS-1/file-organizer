@@ -78,10 +78,10 @@ export default class FileCleaner extends React.Component<IFileCleanerProps> {
                     </div>
                     <p>
                         <strong>Also</strong>: Wenn Du rechts unten <strong>Löschen</strong> drückst, dann{' '}
-                        {makeCount(files)} unwiederbringlich gelöscht. Es wird zwar während des Löschvorgangs ein
-                        Fortschrittsbalken angezeigt und der Vorgang kann links unten durch <strong>Abbrechen</strong>{' '}
-                        vorzeitig beendet werden, allerdings ist der Ablauf im Allgemeinen sehr zügig, so dass eine
-                        vorschnelle Entscheidung selten korrigiert werden kann.
+                        <strong>{makeCount(files)}</strong> unwiederbringlich gelöscht. Es wird zwar während des
+                        Löschvorgangs ein Fortschrittsbalken angezeigt und der Vorgang kann links unten durch{' '}
+                        <strong>Abbrechen</strong> vorzeitig beendet werden, allerdings ist der Ablauf im Allgemeinen
+                        sehr zügig, so dass eine vorschnelle Entscheidung selten korrigiert werden kann.
                     </p>
                     {store.deleteCount > 0 && (
                         <Progress max={store.deleteCount} value={store.deleteCount - store.pendingDeletes.length} />
