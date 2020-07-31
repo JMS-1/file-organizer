@@ -11,6 +11,8 @@
 
     > :local(.folders) {
         margin-left: 2em;
+        max-height: 5.5em;
+        overflow: auto;
     }
 
     > :local(.files) {
