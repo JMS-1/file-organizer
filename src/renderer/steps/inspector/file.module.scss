@@ -1,6 +1,9 @@
 :local(.file) {
     padding: 0.3em 0.5em;
     margin: 0.5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     cursor: pointer;
     background: #ffffff;
     border: 1px solid #444444;
@@ -8,9 +11,9 @@
     box-shadow: 1px 1px 0 rgba(#444444, 0.5);
 
     &:local(.selected) {
+        font-weight: bold;
         pointer-events: none;
         cursor: unset;
-        font-weight: bold;
     }
 
     &:local(:hover) {

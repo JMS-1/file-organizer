@@ -22,9 +22,15 @@ export default class DuplicateFile extends React.Component<IDuplicateFileProps> 
             return null
         }
 
+        const name = basename(file.path)
+
         return (
-            <div className={classNames(styles.file, this.props.selected && styles.selected)} onClick={this.select}>
-                {basename(file.path)}
+            <div
+                className={classNames(styles.file, this.props.selected && styles.selected)}
+                title={name}
+                onClick={this.select}
+            >
+                {name}
             </div>
         )
     }
