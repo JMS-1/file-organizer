@@ -1,10 +1,9 @@
 import { createHash } from 'crypto'
 import { remote } from 'electron'
 import { fromFile } from 'file-type'
-import { statSync, readdir, stat, createReadStream } from 'fs'
+import { statSync, readdir, stat, createReadStream, unlink } from 'fs'
 import { observable, action, computed } from 'mobx'
 import { join } from 'path'
-import trash from 'trash'
 import { pathToFileURL } from 'url'
 import { promisify } from 'util'
 
@@ -257,7 +256,7 @@ class RootStore {
             }
 
             try {
-                await trash(file, { glob: false })
+                await promisify(unlink)(file)
             } catch (error) {
                 console.error(error.message)
             }
