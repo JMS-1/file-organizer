@@ -11,7 +11,7 @@ interface IFileFinderProps {}
 function makeNumber(count: number): string {
     switch (count) {
         case 0:
-            return 'wurden keine Datei'
+            return 'wurde keine Datei'
         case 1:
             return 'wurde eine Datei'
         default:
