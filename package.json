@@ -12,7 +12,8 @@
         }
     },
     "dependencies": {
-        "source-map-support": "^0.5.19"
+        "source-map-support": "^0.5.19",
+        "trash": "^6.1.1"
     },
     "description": "File Organizer",
     "devDependencies": {
@@ -71,5 +72,5 @@
             "selector-class-pattern": null
         }
     },
-    "version": "1.0.0"
+    "version": "1.1.0"
 }
