@@ -63,8 +63,9 @@
     },
     "scripts": {
         "build": "rimraf dist && electron-webpack",
-        "deploy": "rimraf dist && electron-webpack && electron-builder",
-        "watch": "electron-webpack dev"
+        "linux": "rimraf dist && electron-webpack && electron-builder",
+        "watch": "electron-webpack dev",
+        "windows": "rimraf dist && electron-webpack && electron-builder --x64 --ia32"
     },
     "stylelint": {
         "extends": "@insynergie/stylelint-config",

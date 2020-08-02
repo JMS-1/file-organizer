@@ -1,7 +1,7 @@
 import { createHash } from 'crypto'
 import { remote } from 'electron'
 import { fromFile } from 'file-type'
-import { statSync, readdir, stat, createReadStream } from 'fs'
+import { statSync, readdir, stat, createReadStream, unlink } from 'fs'
 import { observable, action, computed } from 'mobx'
 import { join } from 'path'
 import trash from 'trash'
@@ -257,7 +257,11 @@ class RootStore {
             }
 
             try {
-                await trash(file)
+                if (process.arch === 'ia32' || process.arch === 'x32') {
+                    await promisify(unlink)(file)
+                } else {
+                    await trash(file)
+                }
             } catch (error) {
                 console.error(error.message)
             }
