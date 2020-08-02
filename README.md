@@ -16,5 +16,5 @@ Ganz interessant waren zum Beispiel die kleinen Tricks zum Zugriff auf lokale Da
 
 ## Ausführbare Anwendung
 
-* **für Windows**: [File Organizer 1.0.0.exe](../../raw/master/dist/File%20Organizer%201.1.0.exe)
-* **für Linux**: [File Organizer-1.0.0.AppImage](../../raw/master/dist/File%20Organizer-1.1.0.AppImage)
+* **für Windows**: [File Organizer 1.1.0.exe](../../raw/master/dist/File%20Organizer%201.1.0.exe)
+* **für Linux**: [File Organizer-1.1.0.AppImage](../../raw/master/dist/File%20Organizer-1.1.0.AppImage)
