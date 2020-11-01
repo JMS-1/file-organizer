@@ -38,7 +38,7 @@ export default class FileFinder extends React.Component<IFileFinderProps> {
                     </p>
                     <p>
                         Wenn Du <strong>Vergleichen</strong> drückst werden Duplikate der gefundenen Dateien ermittelt.
-                        Je nach Anzahl der Dateien kann das wieder eine ganz Weile dauern
+                        Je nach Anzahl der Dateien kann das wieder eine ganze Weile dauern
                     </p>
                 </div>
             </div>

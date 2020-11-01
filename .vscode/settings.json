@@ -11,7 +11,6 @@
         "source.fixAll.stylelint": true
     },
     "editor.formatOnSave": true,
-    "eslint.enable": true,
     "eslint.validate": [
         "typescript",
         "typescriptreact"

@@ -2,7 +2,7 @@ import { createHash } from 'crypto'
 import { remote } from 'electron'
 import { fromFile } from 'file-type'
 import { statSync, readdir, stat, createReadStream, unlink } from 'fs'
-import { observable, action, computed } from 'mobx'
+import { observable, action, computed, makeObservable } from 'mobx'
 import { join } from 'path'
 import trash from 'trash'
 import { pathToFileURL } from 'url'
@@ -61,42 +61,71 @@ function getHash(path: string, abort: () => boolean): Promise<string> {
 }
 
 class RootStore {
-    @observable step: TStep = 'choose-root'
+    step: TStep = 'choose-root'
 
-    @observable private readonly _configuration: IConfiguration = {
+    private readonly _configuration: IConfiguration = {
         maxFileSize: 100 * 1024 * 1024,
         minFileSize: 10 * 1024,
         rootPath: '',
     }
 
-    @observable busy = 0
+    busy = 0
 
-    @observable readonly files: IFileInfo[] = []
+    readonly files: IFileInfo[] = []
 
-    @observable readonly groups: IGroupInfo[] = []
+    readonly groups: IGroupInfo[] = []
 
-    @observable private _scanning = false
+    private _scanning = false
 
-    @observable private _hash = 0
+    private _hash = 0
 
-    @observable groupIndex = 0
+    groupIndex = 0
 
-    @observable selectedFolders: Record<number, boolean> = {}
+    selectedFolders: Record<number, boolean> = {}
 
-    @observable selectedHash = ''
+    selectedHash = ''
 
-    @observable mimeType = ''
+    mimeType = ''
 
-    @observable selectedPath = ''
+    selectedPath = ''
 
-    @observable pendingDeletes: string[] = []
+    pendingDeletes: string[] = []
 
-    @observable deleteCount = 0
+    deleteCount = 0
 
     constructor() {
         const config = localStorage.getItem(configName) || '{}'
 
         this._configuration = { ...this._configuration, ...JSON.parse(config) }
+
+        makeObservable<RootStore, '_hash' | '_scanning' | '_configuration' | 'createHash'>(this, {
+            _configuration: observable,
+            _hash: observable,
+            _scanning: observable,
+            backButtonText: computed,
+            busy: observable,
+            createHash: action,
+            deleteCount: observable,
+            enableDelete: action,
+            files: observable,
+            groupIndex: observable,
+            groups: observable,
+            isBackButtonEnabled: computed,
+            isBackButtonVisible: computed,
+            isNextButtonEnabled: computed,
+            mimeType: observable,
+            nextButtonText: computed,
+            nextStep: action,
+            pendingDeletes: observable,
+            prevStep: action,
+            selectedFolders: observable,
+            selectedHash: observable,
+            selectedPath: observable,
+            selectedUri: computed,
+            selectHash: action,
+            setRootPath: action,
+            step: observable,
+        })
     }
 
     get rootPath(): string {
@@ -133,7 +162,6 @@ class RootStore {
         localStorage.setItem(configName, JSON.stringify(this._configuration))
     }
 
-    @action
     private async scanFiles(): Promise<void> {
         this._scanning = true
 
@@ -187,7 +215,6 @@ class RootStore {
         }
     }
 
-    @action
     private async createHash(): Promise<void> {
         this._hash = 1
 
@@ -232,7 +259,6 @@ class RootStore {
         }
     }
 
-    @action
     private async deleteFiles(): Promise<void> {
         this.deleteCount = this.pendingDeletes.length
 
@@ -270,7 +296,6 @@ class RootStore {
         }
     }
 
-    @action
     async selectHash(hash: string): Promise<void> {
         this.mimeType = ''
         this.selectedHash = hash
@@ -289,19 +314,16 @@ class RootStore {
         }
     }
 
-    @action
     setRootPath(path: string): void {
         this._configuration.rootPath = path
 
         this.writeStore()
     }
 
-    @computed
     get isBackButtonVisible(): boolean {
         return this.step !== 'choose-root' && this.step !== 'finished'
     }
 
-    @action
     nextStep(): void {
         let index = stepOrder.findIndex((s) => s === this.step)
 
@@ -341,7 +363,6 @@ class RootStore {
         this.step = stepOrder[(index + 1) % stepOrder.length]
     }
 
-    @action
     enableDelete(enable: boolean): void {
         this.pendingDeletes.splice(0)
 
@@ -359,7 +380,6 @@ class RootStore {
         }
     }
 
-    @action
     prevStep(): void {
         switch (this.step) {
             case 'find-files':
@@ -394,7 +414,6 @@ class RootStore {
         this.step = stepOrder[(index + stepOrder.length - 1) % stepOrder.length]
     }
 
-    @computed
     get backButtonText(): string {
         const cancel =
             (this.step == 'find-files' && this.scanning) ||
@@ -404,7 +423,6 @@ class RootStore {
         return cancel ? 'Abbrechen' : 'Zurück'
     }
 
-    @computed
     get isBackButtonEnabled(): boolean {
         switch (this.step) {
             case 'compare-files':
@@ -417,7 +435,6 @@ class RootStore {
         return false
     }
 
-    @computed
     get isNextButtonEnabled(): boolean {
         switch (this.step) {
             case 'choose-root': {
@@ -447,7 +464,6 @@ class RootStore {
         return false
     }
 
-    @computed
     get nextButtonText(): string {
         switch (this.step) {
             case 'choose-root':
@@ -473,7 +489,6 @@ class RootStore {
         return 'Weiter'
     }
 
-    @computed
     get selectedUri(): string {
         return this.selectedPath && pathToFileURL(this.selectedPath).href
     }

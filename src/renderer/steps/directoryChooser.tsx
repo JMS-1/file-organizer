@@ -1,6 +1,5 @@
 import classNames from 'classnames'
 import { remote } from 'electron'
-import { action } from 'mobx'
 import { observer } from 'mobx-react'
 import * as React from 'react'
 
@@ -50,7 +49,6 @@ export default class DirectoryChooser extends React.Component<IDirectoryChooserP
         )
     }
 
-    @action
     private readonly browse = async (): Promise<void> => {
         store.busy += 1
 
