@@ -16,6 +16,7 @@ function createMainWindow(): BrowserWindow {
         useContentSize: true,
         webPreferences: {
             devTools: !isProduction,
+            enableRemoteModule: true,
             nodeIntegration: true,
             webSecurity: false,
         },
